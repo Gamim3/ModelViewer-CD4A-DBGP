@@ -23,6 +23,7 @@ public class ModelManager : MonoBehaviour
     [Space]
     [SerializeField] private Transform _modelHolder;
 
+    public Action<Model> OnModelLoaded;
     public Action<Model> OnModelChanged;
     public bool loading;
 
@@ -68,6 +69,7 @@ public class ModelManager : MonoBehaviour
             _spawnedModels.Add(spawnedModel[0]);
 
             spawnedModel[0].SetActive(false);
+            OnModelLoaded?.Invoke(spawnedModel[0]);
         }
     }
 
