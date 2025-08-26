@@ -20,6 +20,7 @@ public class EnvironmentManager : MonoBehaviour
         }
     }
 
+    private int _currentEnvironmentIndex = 0;
     [Header("References")]
     [SerializeField] private Renderer _skyboxRenderer;
 
@@ -42,7 +43,7 @@ public class EnvironmentManager : MonoBehaviour
         // Update skybox
         if (_skyboxRenderer != null && newEnvironment.skybox != null)
         {
-            _skyboxRenderer.material.SetTexture(1, newEnvironment.skybox.material.mainTexture);
+            _skyboxRenderer.material.SetTexture(_currentEnvironmentIndex == 0 ? 1 : 0, newEnvironment.skybox.material.mainTexture);
         }
 
         // Update lighting
