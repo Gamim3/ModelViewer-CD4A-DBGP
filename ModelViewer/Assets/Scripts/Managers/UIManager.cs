@@ -11,12 +11,16 @@ public class UIManager : MonoBehaviour
     private List<Button> _spawnedEnvironmentButtons = new();
 
     [Header("Spawnable button info")]
+    [Tooltip("The prefab of the model button to spawn")]
     [SerializeField] private Button _modelUIBtn;
+    [Tooltip("The prefab of the enviroment button to spawn")]
     [SerializeField] private Button _environmentUIBtn;
     [SerializeField] private TMP_Text _modelInfoText;
 
     [Header("Model button location info")]
+    [Tooltip("The gameobject to spawn the model buttons under")]
     [SerializeField] private RectTransform _modelButtonHolder;
+    [Tooltip("The gameobject to spawn the enviroment buttons under")]
     [SerializeField] private RectTransform _environmentButtonHolder;
     [SerializeField] private RectTransform _descriptionPanel;
 
@@ -46,7 +50,6 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //TEMP uitgezet wegens geen model manager in test scene
         ModelManager.Instance.OnModelChanged += RefreshModelInfo;
         ModelManager.Instance.OnModelLoaded += SpawnModelButton;
     }
@@ -70,6 +73,10 @@ public class UIManager : MonoBehaviour
         _spawnedModelButtons.Add(newButton);
     }
 
+    /// <summary>
+    /// Spawns a button for all the avalible enviroments
+    /// </summary>
+    /// <param name="model"> Model corresponding to the wanted model </param>
     private void SpawnEnvironmentButton(Environment environment)
     {
         if (environment == null) return;
@@ -79,6 +86,7 @@ public class UIManager : MonoBehaviour
         newButton.onClick.AddListener(() => EnvironmentManager.Instance.ChangeEnvironment(environment));
         _spawnedEnvironmentButtons.Add(newButton);
     }
+
     /// <summary>
     /// Handles the loading screen while there are still loading actions in the list
     /// </summary>

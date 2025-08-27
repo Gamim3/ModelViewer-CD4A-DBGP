@@ -387,6 +387,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1878695131157014768, guid: c3fc998e075fc6d48aeb3f65e8df4cd0, type: 3}
+      propertyPath: _zoomLimits.x
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878695131157014768, guid: c3fc998e075fc6d48aeb3f65e8df4cd0, type: 3}
+      propertyPath: _zoomLimits.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878695131157014768, guid: c3fc998e075fc6d48aeb3f65e8df4cd0, type: 3}
+      propertyPath: _panningLimits.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878695131157014768, guid: c3fc998e075fc6d48aeb3f65e8df4cd0, type: 3}
+      propertyPath: _panningLimits.y
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4854460961287137934, guid: c3fc998e075fc6d48aeb3f65e8df4cd0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
