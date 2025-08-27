@@ -65,7 +65,9 @@ public class ModelManager : MonoBehaviour
         for (int i = 0; i < allModels.Length; i++)
         {
             var modelToSpawn = allModels[i];
-            var spawnedModel = await InstantiateAsync(modelToSpawn, _modelHolder);
+            var spawnOperation = InstantiateAsync(modelToSpawn, _modelHolder);
+            UIManager.Instance.AddLoadingAction(spawnOperation);
+            var spawnedModel = await spawnOperation;
             _spawnedModels.Add(spawnedModel[0]);
 
             spawnedModel[0].SetActive(false);

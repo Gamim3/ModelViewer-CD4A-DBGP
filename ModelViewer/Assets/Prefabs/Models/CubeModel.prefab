@@ -55,7 +55,7 @@ MonoBehaviour:
   polyCount: -1
   triCount: -1
   textureCount: -1
-  previewImage: {fileID: 0}
+  previewImage: {fileID: 21300000, guid: c7eadc918ab2bb94fb2bcccdb0b8147a, type: 3}
 --- !u!1 &8489261414541370654
 GameObject:
   m_ObjectHideFlags: 0
