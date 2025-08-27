@@ -8,11 +8,16 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     private List<Button> _spawnedModelButtons = new();
+    private List<Button> _spawnedEnvironmentButtons = new();
+
     [Header("Spawnable button info")]
     [SerializeField] private Button _modelUIBtn;
+    [SerializeField] private Button _environmentUIBtn;
     [SerializeField] private TMP_Text _modelInfoText;
+
     [Header("Model button location info")]
     [SerializeField] private RectTransform _modelButtonHolder;
+    [SerializeField] private RectTransform _environmentButtonHolder;
     [SerializeField] private RectTransform _descriptionPanel;
 
     [SerializeField] private Animator _descriptionPanelAnimator;
@@ -32,26 +37,31 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        foreach (var environment in EnvironmentManager.Instance.Environments)
+        {
+            SpawnEnvironmentButton(environment);
+        }
     }
 
     private void OnEnable()
     {
         //TEMP uitgezet wegens geen model manager in test scene
         ModelManager.Instance.OnModelChanged += RefreshModelInfo;
-        ModelManager.Instance.OnModelLoaded += SpawnButton;
+        ModelManager.Instance.OnModelLoaded += SpawnModelButton;
     }
 
     private void OnDisable()
     {
         ModelManager.Instance.OnModelChanged -= RefreshModelInfo;
-        ModelManager.Instance.OnModelLoaded -= SpawnButton;
+        ModelManager.Instance.OnModelLoaded -= SpawnModelButton;
     }
 
     /// <summary>
     /// Spawns a button for the latest model that was preloaded
     /// </summary>
     /// <param name="model"> Model corresponding to the wanted model </param>
-    public void SpawnButton(Model model)
+    private void SpawnModelButton(Model model)
     {
         Button newButton = Instantiate(_modelUIBtn, _modelButtonHolder.transform.position, _modelButtonHolder.transform.rotation, _modelButtonHolder);
         newButton.GetComponentInChildren<TMP_Text>().text = model.modelName;
@@ -60,11 +70,15 @@ public class UIManager : MonoBehaviour
         _spawnedModelButtons.Add(newButton);
     }
 
-    public void OnEnviromentButtonClicked(int index)
+    private void SpawnEnvironmentButton(Environment environment)
     {
-        //call naar enviromentcontroller om de enviroment te veranderen
-    }
+        if (environment == null) return;
 
+        Button newButton = Instantiate(_environmentUIBtn, _environmentButtonHolder);
+        newButton.GetComponentInChildren<TMP_Text>().text = environment.Name;
+        newButton.onClick.AddListener(() => EnvironmentManager.Instance.ChangeEnvironment(environment));
+        _spawnedEnvironmentButtons.Add(newButton);
+    }
     /// <summary>
     /// Handles the loading screen while there are still loading actions in the list
     /// </summary>
@@ -105,7 +119,6 @@ public class UIManager : MonoBehaviour
     /// Sets all the inforation of a model in the info UI based on last clicked model.
     /// </summary>
     /// <param name="modelinfo"></param>
-
     private void RefreshModelInfo(Model modelinfo)
     {
         _modelInfoText.text =

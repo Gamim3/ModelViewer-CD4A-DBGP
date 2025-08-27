@@ -66,17 +66,12 @@ public class EnvironmentManager : MonoBehaviour
 
         if (_defaultEnvironment != null)
         {
+            Debug.Log($"Loading default environment {_defaultEnvironment.Name} with lighting type {_defaultEnvironment.lightingType}");
             ChangeEnvironment(_defaultEnvironment);
-            if (_defaultEnvironment.environmentType == _currentEnvironmentType)
-            {
-                _currentEnvironmentType = (LightingType)(((int)_defaultEnvironment.environmentType + 1) % Enum.GetValues(typeof(LightingType)).Length);
-                ChangeLighting(_currentEnvironmentType);
-            }
         }
         else if (_environments.Length > 0)
         {
             ChangeEnvironment(_environments[0]);
-
         }
     }
 
@@ -130,9 +125,10 @@ public class EnvironmentManager : MonoBehaviour
         }
 
         // Update sun
-        RenderSettings.sun.transform.rotation = Quaternion.Euler(newEnvironment.lightAngle.x, newEnvironment.lightAngle.y, newEnvironment.lightAngle.z);
+        if (RenderSettings.sun != null)
+            RenderSettings.sun.transform.rotation = Quaternion.Euler(newEnvironment.lightAngle.x, newEnvironment.lightAngle.y, newEnvironment.lightAngle.z);
 
-        ChangeLighting(newEnvironment.environmentType);
+        ChangeLighting(newEnvironment.lightingType);
 
         _currentEnvironment = newEnvironment;
         OnEnvironmentChanged?.Invoke(newEnvironment);
@@ -193,27 +189,28 @@ public class EnvironmentManager : MonoBehaviour
         {
             var currentLerpValue = Skybox.GetFloat("_Lerp");
             var t = Time.deltaTime;
-            var lerpGoal = _currentTextureIndex == 0 ? currentLerpValue + t * (1 / _transitionSpeed) : currentLerpValue - t * (1 / _transitionSpeed);
+            var lerpGoal = _currentTextureIndex == 0 ? currentLerpValue + t * _transitionSpeed : currentLerpValue - t * _transitionSpeed;
             Skybox.SetFloat("_Lerp", lerpGoal);
 
             yield return null;
         }
     }
 
-    public enum LightingType
-    {
-        Light,
-        Dark,
-        Sunset,
-    }
 
-    [CreateAssetMenu(fileName = "New Environment", menuName = "Environment")]
-    public class Environment : ScriptableObject
-    {
-        public string Name;
-        public LightingType environmentType;
+}
+public enum LightingType
+{
+    Light,
+    Dark,
+    Sunset,
+}
 
-        public Material skyboxTexture;
-        public Vector3 lightAngle;
-    }
+[CreateAssetMenu(fileName = "New Environment", menuName = "Environment")]
+public class Environment : ScriptableObject
+{
+    public string Name;
+    public LightingType lightingType;
+
+    public Material skyboxTexture;
+    public Vector3 lightAngle;
 }
