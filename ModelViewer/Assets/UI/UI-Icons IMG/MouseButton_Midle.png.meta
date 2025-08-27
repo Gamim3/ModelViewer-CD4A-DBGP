@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e10b21ee47a63d24da2d51bb05bc34be
+guid: 5db4c473686452a4a9ab8b53b5086bfa
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,23 +110,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Border_S1_0
+      name: MouseButton_Midle_0
       rect:
         serializedVersion: 2
-        x: 51
-        y: 51
-        width: 922
-        height: 922
+        x: 0
+        y: 0
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 200, y: 200, z: 200, w: 200}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 16235b9352935d24b9018c2e006188cd
-      internalID: 986526999
+      spriteID: 4c84d4f102703bd41a712fe05a5bdbc5
+      internalID: 579938820
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e8fd15e5b936b2d4f92ae2377f91dfbe
+    spriteID: e27ddeb82381fe8468efc91f8ac17118
     internalID: 0
     vertices: []
     indices: 
@@ -145,7 +145,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Border_S1_0: 986526999
+      MouseButton_Midle_0: 579938820
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
