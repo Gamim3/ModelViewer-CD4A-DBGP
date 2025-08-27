@@ -1,13 +1,32 @@
+using System;
+using System.Collections;
+using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnvironmentManager : MonoBehaviour
 {
-    [Header("Environments")]
-    [SerializeField] private Environment[] _environments;
-    [SerializeField] private Environment _currentEnvironment;
+    public static EnvironmentManager Instance;
 
-    [SerializeField] private EnvironmentType _currentEnvironmentType;
-    public EnvironmentType CurrentEnvironmentType
+    [Header("Environments")]
+    [Tooltip("All available environments")]
+    [SerializeField] private Environment[] _environments;
+    [SerializeField, ReadOnly] private Environment _currentEnvironment;
+    [Tooltip("Environment to load on start(will pick first environment if empty)")]
+    [SerializeField] private Environment _defaultEnvironment;
+    [Tooltip("Speed at which to transition between environments")]
+    [SerializeField] private float _transitionSpeed = 1f;
+
+    public Environment[] Environments => _environments;
+    private Coroutine _lerpCoroutine;
+
+    [Header("Lighting")]
+    [SerializeField] private GameObject[] _lightObjects;
+    [SerializeField] private GameObject[] _darkObjects;
+    [SerializeField] private GameObject[] _sunsetObjects;
+
+    [SerializeField] private LightingType _currentEnvironmentType;
+    public LightingType CurrentEnvironmentType
     {
         get { return _currentEnvironmentType; }
         set
@@ -19,79 +38,169 @@ public class EnvironmentManager : MonoBehaviour
             }
         }
     }
-
-    private int _currentEnvironmentIndex = 0;
+    [Space]
+    private int _currentTextureIndex = 0;
     [Header("References")]
-    [SerializeField] private Renderer _skyboxRenderer;
-
-    private void Start()
+    private Material Skybox
     {
-        if (_environments.Length > 0)
+        get => RenderSettings.skybox;
+        set => RenderSettings.skybox = value;
+    }
+    [SerializeField]
+    private string _skyBoxTextureOneName = "_Tex1";
+    [SerializeField] private string _skyBoxTextureTwoName = "_Tex2";
+
+    public Action<Environment> OnEnvironmentChanged;
+    public Action<LightingType> OnLightingChanged;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+        if (_defaultEnvironment != null)
+        {
+            ChangeEnvironment(_defaultEnvironment);
+            if (_defaultEnvironment.environmentType == _currentEnvironmentType)
+            {
+                _currentEnvironmentType = (LightingType)(((int)_defaultEnvironment.environmentType + 1) % Enum.GetValues(typeof(LightingType)).Length);
+                ChangeLighting(_currentEnvironmentType);
+            }
+        }
+        else if (_environments.Length > 0)
         {
             ChangeEnvironment(_environments[0]);
+
+        }
+    }
+
+    // DEBUG REMOVE LATER
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            ChangeEnvironment(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            ChangeEnvironment(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            ChangeEnvironment(2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            ChangeLighting(LightingType.Light);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            ChangeLighting(LightingType.Dark);
         }
     }
 
     /// <summary>
-    /// Changes the current environment to the specified one.
+    /// Changes the current environment to the <paramref name="newEnvironment"/>.
     /// </summary>
     /// <param name="newEnvironment"> Environment to change to </param>
     public void ChangeEnvironment(Environment newEnvironment)
     {
         if (newEnvironment == null || newEnvironment == _currentEnvironment) return;
 
-        // Update skybox
-        if (_skyboxRenderer != null && newEnvironment.skybox != null)
+        _currentTextureIndex = _currentTextureIndex == 1 ? 0 : 1;
+
+        if (_lerpCoroutine != null)
         {
-            _skyboxRenderer.material.SetTexture(_currentEnvironmentIndex == 0 ? 1 : 0, newEnvironment.skybox.material.mainTexture);
+            StopCoroutine(_lerpCoroutine);
+            _lerpCoroutine = null;
         }
 
-        // Update lighting
+        // Update skybox
+        if (newEnvironment.skyboxTexture != null)
+        {
+            var targetTexture = newEnvironment.skyboxTexture;
+            _lerpCoroutine = StartCoroutine(LerpSkyBox(targetTexture));
+        }
+
+        // Update sun
         RenderSettings.sun.transform.rotation = Quaternion.Euler(newEnvironment.lightAngle.x, newEnvironment.lightAngle.y, newEnvironment.lightAngle.z);
 
-        // Deactivate previous environment light objects
-        if (_currentEnvironment != null)
-        {
-            foreach (var lightObj in _currentEnvironment.lightObjects)
-            {
-                if (lightObj != null)
-                {
-                    lightObj.SetActive(false);
-                }
-            }
-        }
-
-        // Activate new environment light objects
-        foreach (var lightObj in newEnvironment.lightObjects)
-        {
-            if (lightObj != null)
-            {
-                lightObj.SetActive(true);
-            }
-        }
+        ChangeLighting(newEnvironment.environmentType);
 
         _currentEnvironment = newEnvironment;
+        OnEnvironmentChanged?.Invoke(newEnvironment);
     }
 
     /// <summary>
-    /// Changes the lighting based on the specified environment type.
+    /// Changes the current environment based on the <paramref name="index"/> in the _environments array.
+    /// </summary>
+    /// <param name="index"> Index of environment to change to </param>
+    public void ChangeEnvironment(int index)
+    {
+        if (index < 0 || index >= _environments.Length) return;
+
+        ChangeEnvironment(_environments[index]);
+    }
+
+    /// <summary>
+    /// Changes the lighting based on the specified <paramref name="environmentType"/>.
     /// </summary>
     /// <param name="environmentType"> EnvironmentType to switch lighting to </param>
-    public void ChangeLighting(EnvironmentType environmentType)
+    public void ChangeLighting(LightingType environmentType)
     {
-        var newEnvironment = System.Array.Find(_environments, env => env.environmentType == environmentType);
-        if (newEnvironment != null)
+        foreach (var light in _lightObjects)
         {
-            ChangeEnvironment(newEnvironment);
+            if (light != null)
+            {
+                light.SetActive(environmentType == LightingType.Light);
+            }
         }
-        else
+        foreach (var dark in _darkObjects)
         {
-            Debug.LogWarning($"Environment of type {environmentType} not found.");
+            dark.SetActive(environmentType == LightingType.Dark);
+        }
+        foreach (var sunset in _sunsetObjects)
+        {
+            sunset.SetActive(environmentType == LightingType.Sunset);
+        }
+
+        _currentEnvironmentType = environmentType;
+        OnLightingChanged?.Invoke(environmentType);
+    }
+
+    /// <summary>
+    /// Smoothly lerps the skybox texture transition using it's shader. 
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator LerpSkyBox(Material targetTexture)
+    {
+        if (Skybox == null || Skybox.HasFloat("_Lerp") == false)
+        {
+            RenderSettings.skybox = targetTexture;
+            yield break;
+        }
+
+        Skybox.SetTexture(_currentTextureIndex == 0 ? _skyBoxTextureOneName : _skyBoxTextureTwoName, targetTexture.mainTexture);
+
+        while (Skybox.GetFloat("_Lerp") != _currentTextureIndex)
+        {
+            var currentLerpValue = Skybox.GetFloat("_Lerp");
+            var t = Time.deltaTime;
+            var lerpGoal = _currentTextureIndex == 0 ? currentLerpValue + t * (1 / _transitionSpeed) : currentLerpValue - t * (1 / _transitionSpeed);
+            Skybox.SetFloat("_Lerp", lerpGoal);
+
+            yield return null;
         }
     }
 
-
-    public enum EnvironmentType
+    public enum LightingType
     {
         Light,
         Dark,
@@ -102,10 +211,9 @@ public class EnvironmentManager : MonoBehaviour
     public class Environment : ScriptableObject
     {
         public string Name;
-        public EnvironmentType environmentType;
+        public LightingType environmentType;
 
-        public Skybox skybox;
+        public Material skyboxTexture;
         public Vector3 lightAngle;
-        public GameObject[] lightObjects;
     }
 }
