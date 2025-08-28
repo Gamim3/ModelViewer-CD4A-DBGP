@@ -15,6 +15,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector4 _panningLimits;
     [SerializeField] private Vector2 _zoomLimits;
 
+    private PlayerInput _playerInput;
     private Vector2 _mouseInput;
     private float _scrollInput;
     private bool _mmbInput;
@@ -32,6 +33,8 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        _playerInput = GetComponent<PlayerInput>();
+
         _defaultCamPos = transform.position;
         _defaultRot = transform.rotation;
         _defaultZoomPos = transform.localPosition.z;
@@ -45,23 +48,23 @@ public class CameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        GetComponent<PlayerInput>().actions.FindAction("Zoom").performed += CalculateZoom;
+        _playerInput.actions.FindAction("Zoom").performed += CalculateZoom;
     }
 
     private void OnDisable()
     {
-        GetComponent<PlayerInput>().actions.FindAction("Zoom").performed -= CalculateZoom;
+        _playerInput.actions.FindAction("Zoom").performed -= CalculateZoom;
     }
 
     private void HandleInput()
     {
-        _mouseInput = GetComponent<PlayerInput>().actions.FindAction("Rotate").ReadValue<Vector2>();
-        if (GetComponent<PlayerInput>().actions.FindAction("AllowRotate").IsPressed())
+        _mouseInput = _playerInput.actions.FindAction("Rotate").ReadValue<Vector2>();
+        if (_playerInput.actions.FindAction("AllowRotate").IsPressed())
         {
             HandleRotation();
         }
 
-        if (GetComponent<PlayerInput>().actions.FindAction("Panning").IsPressed())
+        if (_playerInput.actions.FindAction("Panning").IsPressed())
         {
             CalculatePanning();
         }
@@ -71,8 +74,10 @@ public class CameraController : MonoBehaviour
     {
         _targetPanPos.x -= _mouseInput.x * _panSensitivity;
         _targetPanPos.y -= _mouseInput.y * _panSensitivity;
+
         _targetPanPos.x = Mathf.Clamp(_targetPanPos.x, _panningLimits.x, _panningLimits.y);
         _targetPanPos.y = Mathf.Clamp(_targetPanPos.y, _panningLimits.z, _panningLimits.w);
+
         transform.localPosition = new Vector3(_targetPanPos.x, _targetPanPos.y, transform.localPosition.z);
     }
 
@@ -105,5 +110,4 @@ public class CameraController : MonoBehaviour
         _targetPanPos = new Vector2(0, 0);
         _targetZoomPos = _defaultZoomPos;
     }
-
 }
