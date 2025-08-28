@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnvironmentManager : MonoBehaviour
@@ -40,15 +39,18 @@ public class EnvironmentManager : MonoBehaviour
     }
     [Space]
     private int _currentTextureIndex = 0;
+
     [Header("References")]
     private Material Skybox
     {
         get => RenderSettings.skybox;
         set => RenderSettings.skybox = value;
     }
-    [SerializeField]
-    private string _skyBoxTextureOneName = "_Tex1";
-    [SerializeField] private string _skyBoxTextureTwoName = "_Tex2";
+
+    [SerializeField] private string _skyBoxTextureOneName = "_Cubemap";
+    [SerializeField] private string _skyBoxTextureTwoName = "_Cubemap2";
+    [SerializeField] private string _skyBoxLerpName = "_Lerp";
+    [SerializeField] private string _solidBackgroundLerpName = "_LerpSolidBackground";
 
     public Action<Environment> OnEnvironmentChanged;
     public Action<LightingType> OnLightingChanged;
@@ -175,22 +177,22 @@ public class EnvironmentManager : MonoBehaviour
     /// Smoothly lerps the skybox texture transition using it's shader. 
     /// </summary>
     /// <returns></returns>
-    private IEnumerator LerpSkyBox(Material targetTexture)
+    private IEnumerator LerpSkyBox(Cubemap targetTexture)
     {
-        if (Skybox == null || Skybox.HasFloat("_Lerp") == false)
+        if (Skybox == null || Skybox.HasFloat(_skyBoxLerpName) == false)
         {
-            RenderSettings.skybox = targetTexture;
+            RenderSettings.skybox.mainTexture = targetTexture;
             yield break;
         }
 
-        Skybox.SetTexture(_currentTextureIndex == 0 ? _skyBoxTextureOneName : _skyBoxTextureTwoName, targetTexture.mainTexture);
+        Skybox.SetTexture(_currentTextureIndex == 0 ? _skyBoxTextureOneName : _skyBoxTextureTwoName, targetTexture);
 
-        while (Skybox.GetFloat("_Lerp") != _currentTextureIndex)
+        while (Skybox.GetFloat(_skyBoxLerpName) != _currentTextureIndex)
         {
-            var currentLerpValue = Skybox.GetFloat("_Lerp");
+            var currentLerpValue = Skybox.GetFloat(_skyBoxLerpName);
             var t = Time.deltaTime;
             var lerpGoal = _currentTextureIndex == 0 ? currentLerpValue + t * _transitionSpeed : currentLerpValue - t * _transitionSpeed;
-            Skybox.SetFloat("_Lerp", lerpGoal);
+            Skybox.SetFloat(_skyBoxLerpName, lerpGoal);
 
             yield return null;
         }
@@ -198,19 +200,10 @@ public class EnvironmentManager : MonoBehaviour
 
 
 }
+
 public enum LightingType
 {
     Light,
     Dark,
     Sunset,
-}
-
-[CreateAssetMenu(fileName = "New Environment", menuName = "Environment")]
-public class Environment : ScriptableObject
-{
-    public string Name;
-    public LightingType lightingType;
-
-    public Material skyboxTexture;
-    public Vector3 lightAngle;
 }
