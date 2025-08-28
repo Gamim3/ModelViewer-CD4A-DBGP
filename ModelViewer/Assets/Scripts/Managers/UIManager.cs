@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +25,12 @@ public class UIManager : MonoBehaviour
     [Tooltip("The gameobject to spawn the enviroment buttons under")]
     [SerializeField] private RectTransform _environmentButtonHolder;
     [SerializeField] private RectTransform _descriptionPanel;
+
+    [Header("The buttons to change the render type")]
+    public Button nextRenderType;
+    public Button previousRenderType;
+    public Button changeRenderType;
+    private int _renderTypeIndex;
 
     [SerializeField] private Animator _descriptionPanelAnimator;
 
@@ -136,6 +144,29 @@ public class UIManager : MonoBehaviour
             + "PollyCount = " + modelinfo.polyCount + "\n"
             + "TriCount = " + modelinfo.triCount + "\n"
             + "TextureCount = " + modelinfo.textureCount;
+    }
+
+
+    /// <summary>
+    /// Handles the changing of the rendertexture from the UI side and gives te call to the ModelManager
+    /// </summary>
+    public void SetRenderIndex(int index)
+    {
+        _renderTypeIndex += index;
+        if(_renderTypeIndex == -1)
+        {
+            _renderTypeIndex = 2;
+        }
+
+        if (_renderTypeIndex == 3)
+        {
+            _renderTypeIndex = 0;
+        }
+    }
+
+    public void ChangeRenderType()
+    {
+        ModelManager.Instance.ChangeRenderType((RenderType)_renderTypeIndex);
     }
 
     public void QuitApplication()
