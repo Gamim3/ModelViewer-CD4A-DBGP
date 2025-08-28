@@ -12,12 +12,12 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _panSpeed;
 
     [Header("Limits")]
+    [Tooltip("X and Y is for left and rigth. Z and W is for up and down")]
     [SerializeField] private Vector4 _panningLimits;
+    [Tooltip("X is for the near limit Y is for the far limit")]
     [SerializeField] private Vector2 _zoomLimits;
 
     private Vector2 _mouseInput;
-    private float _scrollInput;
-    private bool _mmbInput;
 
     private float _targetZoomPos = -5f;
     private Vector2 _targetPanPos;
@@ -53,6 +53,10 @@ public class CameraController : MonoBehaviour
         GetComponent<PlayerInput>().actions.FindAction("Zoom").performed -= CalculateZoom;
     }
 
+
+    /// <summary>
+    /// continusely reads mouse inputs and checks if rotate or panning button is pressed
+    /// </summary>
     private void HandleInput()
     {
         _mouseInput = GetComponent<PlayerInput>().actions.FindAction("Rotate").ReadValue<Vector2>();
@@ -67,6 +71,9 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The logic for panning in X and Y axis
+    /// </summary>
     private void CalculatePanning()
     {
         _targetPanPos.x -= _mouseInput.x * _panSensitivity;
@@ -90,7 +97,7 @@ public class CameraController : MonoBehaviour
     private void CalculateZoom(InputAction.CallbackContext ctx)
     {
         Vector3 newPos = new Vector3(0, 0, ctx.ReadValue<Vector2>().y + transform.localPosition.z);
-        _targetZoomPos = Mathf.Clamp(newPos.z, _zoomLimits.x, _zoomLimits.y);
+        _targetZoomPos = Mathf.Clamp(newPos.z, _zoomLimits.y, _zoomLimits.x);
     }
 
     private void HandleZoom()

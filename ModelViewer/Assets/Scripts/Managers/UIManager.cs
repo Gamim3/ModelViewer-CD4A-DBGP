@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,14 +13,24 @@ public class UIManager : MonoBehaviour
     private List<Button> _spawnedEnvironmentButtons = new();
 
     [Header("Spawnable button info")]
+    [Tooltip("The prefab of the model button to spawn")]
     [SerializeField] private Button _modelUIBtn;
+    [Tooltip("The prefab of the enviroment button to spawn")]
     [SerializeField] private Button _environmentUIBtn;
     [SerializeField] private TMP_Text _modelInfoText;
 
     [Header("Model button location info")]
+    [Tooltip("The gameobject to spawn the model buttons under")]
     [SerializeField] private RectTransform _modelButtonHolder;
+    [Tooltip("The gameobject to spawn the enviroment buttons under")]
     [SerializeField] private RectTransform _environmentButtonHolder;
     [SerializeField] private RectTransform _descriptionPanel;
+
+    [Header("The buttons to change the render type")]
+    public Button nextRenderType;
+    public Button previousRenderType;
+    public Button changeRenderType;
+    private int _renderTypeIndex;
 
     [SerializeField] private Animator _descriptionPanelAnimator;
 
@@ -46,7 +58,6 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //TEMP uitgezet wegens geen model manager in test scene
         ModelManager.Instance.OnModelChanged += RefreshModelInfo;
         ModelManager.Instance.OnModelLoaded += SpawnModelButton;
     }
@@ -70,6 +81,10 @@ public class UIManager : MonoBehaviour
         _spawnedModelButtons.Add(newButton);
     }
 
+    /// <summary>
+    /// Spawns a button for all the avalible enviroments
+    /// </summary>
+    /// <param name="model"> Model corresponding to the wanted model </param>
     private void SpawnEnvironmentButton(Environment environment)
     {
         if (environment == null) return;
@@ -79,6 +94,7 @@ public class UIManager : MonoBehaviour
         newButton.onClick.AddListener(() => EnvironmentManager.Instance.ChangeEnvironment(environment));
         _spawnedEnvironmentButtons.Add(newButton);
     }
+
     /// <summary>
     /// Handles the loading screen while there are still loading actions in the list
     /// </summary>
@@ -128,6 +144,29 @@ public class UIManager : MonoBehaviour
             + "PollyCount = " + modelinfo.polyCount + "\n"
             + "TriCount = " + modelinfo.triCount + "\n"
             + "TextureCount = " + modelinfo.textureCount;
+    }
+
+
+    /// <summary>
+    /// Handles the changing of the rendertexture from the UI side and gives te call to the ModelManager
+    /// </summary>
+    public void SetRenderIndex(int index)
+    {
+        _renderTypeIndex += index;
+        if(_renderTypeIndex == -1)
+        {
+            _renderTypeIndex = 2;
+        }
+
+        if (_renderTypeIndex == 3)
+        {
+            _renderTypeIndex = 0;
+        }
+    }
+
+    public void ChangeRenderType()
+    {
+        ModelManager.Instance.ChangeRenderType((RenderType)_renderTypeIndex);
     }
 
     public void QuitApplication()
