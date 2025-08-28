@@ -39,6 +39,7 @@ public class EnvironmentManager : MonoBehaviour
     }
     [Space]
     private int _currentTextureIndex = 0;
+    private int _currentSolidBackgroundIndex = 0;
 
     [Header("References")]
     private Material Skybox
@@ -75,6 +76,9 @@ public class EnvironmentManager : MonoBehaviour
         {
             ChangeEnvironment(_environments[0]);
         }
+
+        _currentTextureIndex = (int)Skybox.GetFloat(_skyBoxLerpName);
+        _currentSolidBackgroundIndex = (int)Skybox.GetFloat(_solidBackgroundLerpName);
     }
 
     // DEBUG REMOVE LATER
@@ -174,6 +178,24 @@ public class EnvironmentManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Toggles the solid background on and off with a smooth transition.
+    /// </summary>
+    public void ToggleSolidBackground(bool value)
+    {
+        if (value && _currentSolidBackgroundIndex == 1) return;
+
+        _currentSolidBackgroundIndex = value ? 1 : 0;
+
+        if (_lerpCoroutine != null)
+        {
+            StopCoroutine(_lerpCoroutine);
+            _lerpCoroutine = null;
+        }
+
+        _lerpCoroutine = StartCoroutine(LerpSolidBackground());
+    }
+
+    /// <summary>
     /// Smoothly lerps the skybox texture transition using it's shader. 
     /// </summary>
     /// <returns></returns>
@@ -198,7 +220,18 @@ public class EnvironmentManager : MonoBehaviour
         }
     }
 
+    private IEnumerator LerpSolidBackground()
+    {
+        while (Skybox.GetFloat(_solidBackgroundLerpName) != _currentSolidBackgroundIndex)
+        {
+            var currentLerpValue = Skybox.GetFloat(_solidBackgroundLerpName);
+            var t = Time.deltaTime;
+            var lerpGoal = _currentSolidBackgroundIndex == 0 ? currentLerpValue + t * _transitionSpeed : currentLerpValue - t * _transitionSpeed;
+            Skybox.SetFloat(_solidBackgroundLerpName, lerpGoal);
 
+            yield return null;
+        }
+    }
 }
 
 public enum LightingType

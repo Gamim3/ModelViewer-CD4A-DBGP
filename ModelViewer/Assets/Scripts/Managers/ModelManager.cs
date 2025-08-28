@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -25,7 +24,6 @@ public class ModelManager : MonoBehaviour
 
     public Action<Model> OnModelLoaded;
     public Action<Model> OnModelChanged;
-    public bool loading;
 
     #endregion
 
@@ -48,12 +46,9 @@ public class ModelManager : MonoBehaviour
             Debug.LogError("SpawnPos not set up in the inspector!");
             return;
         }
-
-        Debug.Log($"Start loading: {Time.time}");
-        loading = true;
+        float startTime = Time.time;
         await PreloadModels();
-        loading = false;
-        Debug.Log($"End loading: {Time.time}");
+        Debug.Log($"Loaded {allModels.Length} models in {Time.time - startTime} seconds");
     }
 
     /// <summary>
@@ -125,32 +120,16 @@ public class ModelManager : MonoBehaviour
         if (SelectedModel == null) return;
 
         SelectedModel.ChangeRenderMode(_currentRenderType);
-    }
 
-    #region DEBUG (Delete later)
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (renderType == RenderType.Clay)
         {
-            SelectModel((_selectedModelIndex + 1) % allModels.Length);
+            EnvironmentManager.Instance.ToggleSolidBackground(true);
         }
-
-        if (Input.GetKeyDown(KeyCode.T))
+        else
         {
-            ChangeRenderType(RenderType.Textured);
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            ChangeRenderType(RenderType.Clay);
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            ChangeRenderType(RenderType.Unlit);
+            EnvironmentManager.Instance.ToggleSolidBackground(false);
         }
     }
-
-    #endregion
 
 }
 
