@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Info_0
+      name: MaterialView_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        x: 206
+        y: 206
+        width: 612
+        height: 612
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,8 +125,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6bb4b4273c2d6ea4ab220821b5ef86ca
-      internalID: 206749532
+      spriteID: 269cf1051173906439f67fd3ce73d377
+      internalID: 365874464
       vertices: []
       indices: 
       edges: []
@@ -145,7 +145,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Info_0: 206749532
+      MaterialView_0: 365874464
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
