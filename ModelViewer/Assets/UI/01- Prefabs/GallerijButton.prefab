@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 7074324061040634667}
   - component: {fileID: 3923687109196415861}
   - component: {fileID: 9062563697040233692}
+  - component: {fileID: 3244256738773984736}
   m_Layer: 5
   m_Name: GallerijButton
   m_TagString: Untagged
@@ -477,7 +478,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3273256233177239122}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -511,6 +512,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3244256738773984736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8401254830174000085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750f52e0b8692714d92b7ff94dfff1c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 3923687109196415861}
+  image: {fileID: 3273256233177239122}
 --- !u!1 &8623098359222943439
 GameObject:
   m_ObjectHideFlags: 0

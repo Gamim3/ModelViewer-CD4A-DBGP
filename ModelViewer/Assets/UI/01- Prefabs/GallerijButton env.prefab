@@ -451,6 +451,7 @@ GameObject:
   - component: {fileID: 2115438767394303126}
   - component: {fileID: 4953721661512258527}
   - component: {fileID: 3450024570935000679}
+  - component: {fileID: 6893486890128474284}
   m_Layer: 5
   m_Name: GallerijButton env
   m_TagString: Untagged
@@ -532,6 +533,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6893486890128474284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7696538239066585459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750f52e0b8692714d92b7ff94dfff1c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 3450024570935000679}
+  image: {fileID: 7570789889006439277}
 --- !u!1 &7970621472074385593
 GameObject:
   m_ObjectHideFlags: 0

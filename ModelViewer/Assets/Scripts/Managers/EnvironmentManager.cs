@@ -17,7 +17,8 @@ public class EnvironmentManager : MonoBehaviour
     [SerializeField] private float _transitionSpeed = 1f;
 
     public Environment[] Environments => _environments;
-    private Coroutine _lerpCoroutine;
+    private Coroutine _environmentLerpCoroutine;
+    private Coroutine _solidBackgroundLerpCoroutine;
 
     [Header("Lighting")]
     [SerializeField] private GameObject[] _lightObjects;
@@ -67,9 +68,14 @@ public class EnvironmentManager : MonoBehaviour
             Instance = this;
         }
 
+        Skybox.SetFloat(_skyBoxLerpName, 0f);
+        Skybox.SetFloat(_solidBackgroundLerpName, 0f);
+
+        _currentTextureIndex = 0;
+        _currentSolidBackgroundIndex = 0;
+
         if (_defaultEnvironment != null)
         {
-            Debug.Log($"Loading default environment {_defaultEnvironment.Name} with lighting type {_defaultEnvironment.lightingType}");
             ChangeEnvironment(_defaultEnvironment);
         }
         else if (_environments.Length > 0)
@@ -77,8 +83,6 @@ public class EnvironmentManager : MonoBehaviour
             ChangeEnvironment(_environments[0]);
         }
 
-        // _currentTextureIndex = (int)Skybox.GetFloat(_skyBoxLerpName);
-        // _currentSolidBackgroundIndex = (int)Skybox.GetFloat(_solidBackgroundLerpName);
     }
 
     // DEBUG REMOVE LATER
@@ -117,17 +121,17 @@ public class EnvironmentManager : MonoBehaviour
 
         _currentTextureIndex = _currentTextureIndex == 1 ? 0 : 1;
 
-        if (_lerpCoroutine != null)
+        if (_environmentLerpCoroutine != null)
         {
-            StopCoroutine(_lerpCoroutine);
-            _lerpCoroutine = null;
+            StopCoroutine(_environmentLerpCoroutine);
+            _environmentLerpCoroutine = null;
         }
 
         // Update skybox
         if (newEnvironment.skyboxTexture != null)
         {
             var targetTexture = newEnvironment.skyboxTexture;
-            _lerpCoroutine = StartCoroutine(LerpSkyBox(targetTexture));
+            _environmentLerpCoroutine = StartCoroutine(LerpSkyBox(targetTexture));
         }
 
         // Update sun
@@ -186,13 +190,13 @@ public class EnvironmentManager : MonoBehaviour
 
         _currentSolidBackgroundIndex = value ? 1 : 0;
 
-        if (_lerpCoroutine != null)
+        if (_solidBackgroundLerpCoroutine != null)
         {
-            StopCoroutine(_lerpCoroutine);
-            _lerpCoroutine = null;
+            StopCoroutine(_solidBackgroundLerpCoroutine);
+            _solidBackgroundLerpCoroutine = null;
         }
 
-        _lerpCoroutine = StartCoroutine(LerpSolidBackground());
+        _solidBackgroundLerpCoroutine = StartCoroutine(LerpSolidBackground());
     }
 
     /// <summary>
@@ -204,16 +208,18 @@ public class EnvironmentManager : MonoBehaviour
         if (Skybox == null || Skybox.HasFloat(_skyBoxLerpName) == false)
         {
             RenderSettings.skybox.mainTexture = targetTexture;
+            Debug.Log($"Skybox material does not contain {_skyBoxLerpName}, setting texture directly.");
             yield break;
         }
-
-        Skybox.SetTexture(_currentTextureIndex == 0 ? _skyBoxTextureOneName : _skyBoxTextureTwoName, targetTexture);
 
         while (Skybox.GetFloat(_skyBoxLerpName) != _currentTextureIndex)
         {
             var currentLerpValue = Skybox.GetFloat(_skyBoxLerpName);
             var t = Time.deltaTime;
-            var lerpGoal = _currentTextureIndex == 0 ? currentLerpValue + t * _transitionSpeed : currentLerpValue - t * _transitionSpeed;
+            var lerpGoal = _currentTextureIndex == 1 ? currentLerpValue + t * _transitionSpeed : currentLerpValue - t * _transitionSpeed;
+
+            lerpGoal = Mathf.Clamp01(lerpGoal);
+
             Skybox.SetFloat(_skyBoxLerpName, lerpGoal);
 
             yield return null;
@@ -224,6 +230,7 @@ public class EnvironmentManager : MonoBehaviour
     {
         if (Skybox == null || Skybox.HasFloat(_solidBackgroundLerpName) == false)
         {
+            Debug.LogError("Shader did not contain solid background lerp property!");
             yield break;
         }
 
@@ -231,7 +238,9 @@ public class EnvironmentManager : MonoBehaviour
         {
             var currentLerpValue = Skybox.GetFloat(_solidBackgroundLerpName);
             var t = Time.deltaTime;
-            var lerpGoal = _currentSolidBackgroundIndex == 0 ? currentLerpValue + t * _transitionSpeed : currentLerpValue - t * _transitionSpeed;
+            var lerpGoal = _currentSolidBackgroundIndex == 1 ? currentLerpValue + t * _transitionSpeed : currentLerpValue - t * _transitionSpeed;
+
+            lerpGoal = Mathf.Clamp01(lerpGoal);
             Skybox.SetFloat(_solidBackgroundLerpName, lerpGoal);
 
             yield return null;

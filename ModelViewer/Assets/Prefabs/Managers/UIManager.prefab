@@ -44,12 +44,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e086ccb10c8494594084d476188204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _modelUIBtn: {fileID: 8455882623481772437, guid: e2ef16b7e739afc45b61e93837f66ae2, type: 3}
-  _environmentUIBtn: {fileID: 8455882623481772437, guid: e2ef16b7e739afc45b61e93837f66ae2, type: 3}
+  _cameraController: {fileID: 0}
+  _modelUIBtn: {fileID: 3244256738773984736, guid: 22d8092708e47174084150208cc7a0be, type: 3}
+  _environmentUIBtn: {fileID: 6893486890128474284, guid: da721268aaafe924ab4e9f0148a024df, type: 3}
   _modelInfoText: {fileID: 0}
   _modelButtonHolder: {fileID: 0}
   _environmentButtonHolder: {fileID: 0}
   _descriptionPanel: {fileID: 0}
-  _descriptionPanelAnimator: {fileID: 0}
+  _quitButton: {fileID: 0}
+  _quitPanel: {fileID: 0}
+  _quitYesButton: {fileID: 0}
+  _quitNoButton: {fileID: 0}
+  _resetViewButton: {fileID: 0}
+  _nextRenderType: {fileID: 0}
+  _previousRenderType: {fileID: 0}
+  _uiAnimator: {fileID: 0}
   _loadingScreen: {fileID: 0}
   _loadingText: {fileID: 0}
+  _tabs:
+  - TabButton: {fileID: 0}
+    TabContent: {fileID: 0}
+    TabImage: {fileID: 0}
+    TabAnimator: {fileID: 0}
+  - TabButton: {fileID: 0}
+    TabContent: {fileID: 0}
+    TabImage: {fileID: 0}
+    TabAnimator: {fileID: 0}
+  - TabButton: {fileID: 0}
+    TabContent: {fileID: 0}
+    TabImage: {fileID: 0}
+    TabAnimator: {fileID: 0}
+  _activeButtonColor: {r: 1, g: 1, b: 1, a: 1}
+  _inactiveButtonColor: {r: 0.5803922, g: 0.5803922, b: 0.5803922, a: 1}

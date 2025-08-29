@@ -44,14 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d57108912539c8f4a9091cc947cccf70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _environments: []
+  _environments:
+  - {fileID: 11400000, guid: eb4f298ffab35a14282e8ccf7970a2b3, type: 2}
+  - {fileID: 11400000, guid: e999dafa9e7f22447b1a38819101c327, type: 2}
   _currentEnvironment: {fileID: 0}
-  _defaultEnvironment: {fileID: 0}
+  _defaultEnvironment: {fileID: 11400000, guid: e999dafa9e7f22447b1a38819101c327, type: 2}
   _transitionSpeed: 1
   _lightObjects: []
   _darkObjects: []
   _sunsetObjects: []
   _currentEnvironmentType: 2
   _skyBoxTextureOneName: _Cubemap
-  _skyBoxTextureTwoName: _Cubemap2
+  _skyBoxTextureTwoName: _Cubemap_2
   _skyBoxLerpName: _Lerp
+  _solidBackgroundLerpName: _SolidBackgroundLerp
