@@ -77,8 +77,8 @@ public class EnvironmentManager : MonoBehaviour
             ChangeEnvironment(_environments[0]);
         }
 
-        _currentTextureIndex = (int)Skybox.GetFloat(_skyBoxLerpName);
-        _currentSolidBackgroundIndex = (int)Skybox.GetFloat(_solidBackgroundLerpName);
+        // _currentTextureIndex = (int)Skybox.GetFloat(_skyBoxLerpName);
+        // _currentSolidBackgroundIndex = (int)Skybox.GetFloat(_solidBackgroundLerpName);
     }
 
     // DEBUG REMOVE LATER
@@ -222,6 +222,11 @@ public class EnvironmentManager : MonoBehaviour
 
     private IEnumerator LerpSolidBackground()
     {
+        if (Skybox == null || Skybox.HasFloat(_solidBackgroundLerpName) == false)
+        {
+            yield break;
+        }
+
         while (Skybox.GetFloat(_solidBackgroundLerpName) != _currentSolidBackgroundIndex)
         {
             var currentLerpValue = Skybox.GetFloat(_solidBackgroundLerpName);

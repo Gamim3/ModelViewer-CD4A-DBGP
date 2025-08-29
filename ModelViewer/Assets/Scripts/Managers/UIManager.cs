@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -27,12 +27,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform _descriptionPanel;
 
     [Header("The buttons to change the render type")]
-    public Button nextRenderType;
-    public Button previousRenderType;
-    public Button changeRenderType;
+    [SerializeField] private Button _nextRenderType;
+    [SerializeField] private Button _previousRenderType;
     private int _renderTypeIndex;
 
-    [SerializeField] private Animator _descriptionPanelAnimator;
+    [SerializeField] private Animator _uiAnimator;
 
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private TMP_Text _loadingText;
@@ -49,7 +48,10 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
 
+    private void Start()
+    {
         foreach (var environment in EnvironmentManager.Instance.Environments)
         {
             SpawnEnvironmentButton(environment);
@@ -60,6 +62,9 @@ public class UIManager : MonoBehaviour
     {
         ModelManager.Instance.OnModelChanged += RefreshModelInfo;
         ModelManager.Instance.OnModelLoaded += SpawnModelButton;
+
+        _nextRenderType.onClick.AddListener(() => ChangeRenderType(1));
+        _previousRenderType.onClick.AddListener(() => ChangeRenderType(-1));
     }
 
     private void OnDisable()
@@ -106,7 +111,7 @@ public class UIManager : MonoBehaviour
         while (_loadingActions.Count > loadedCount)
         {
             _loadingScreen.SetActive(true);
-            for (int i = _loadingActions.Count - 1; i >= 0; i--)
+            for (int i = 0; i < _loadingActions.Count; i++)
             {
                 if (_loadingActions[i].isDone)
                 {
@@ -137,8 +142,9 @@ public class UIManager : MonoBehaviour
     /// <param name="modelinfo"></param>
     private void RefreshModelInfo(Model modelinfo)
     {
+        if (_modelInfoText == null) return;
         _modelInfoText.text =
-        "Naam model: " + modelinfo.modelName + "\n"
+        $"Naam model: " + modelinfo.modelName + "\n"
             + "Omschrijving: " + modelinfo.description + "\n"
             + "Naam artist: " + modelinfo.creatorName + "\n"
             + "PollyCount = " + modelinfo.polyCount + "\n"
@@ -150,22 +156,13 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Handles the changing of the rendertexture from the UI side and gives te call to the ModelManager
     /// </summary>
-    public void SetRenderIndex(int index)
+    public void ChangeRenderType(int index)
     {
-        _renderTypeIndex += index;
-        if(_renderTypeIndex == -1)
-        {
-            _renderTypeIndex = 2;
-        }
+        _renderTypeIndex = (_renderTypeIndex + index) % Enum.GetNames(typeof(RenderType)).Length;
 
-        if (_renderTypeIndex == 3)
-        {
-            _renderTypeIndex = 0;
-        }
-    }
+        if (_uiAnimator != null)
+            _uiAnimator.SetInteger("RenderTypeIndex", _renderTypeIndex);
 
-    public void ChangeRenderType()
-    {
         ModelManager.Instance.ChangeRenderType((RenderType)_renderTypeIndex);
     }
 

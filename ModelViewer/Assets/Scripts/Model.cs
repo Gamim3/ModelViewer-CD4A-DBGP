@@ -20,6 +20,7 @@ public class Model : MonoBehaviour
     public int textureCount = -1;
     [Space]
     public Sprite previewImage;
+    public Renderer Renderer => _renderer != null ? _renderer : null;
 
     void Start()
     {

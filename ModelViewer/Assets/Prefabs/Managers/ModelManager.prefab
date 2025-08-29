@@ -49,7 +49,7 @@ MonoBehaviour:
   - {fileID: 281629020463788661, guid: 7c84e0d013e312241b1768d01694ffa9, type: 3}
   - {fileID: 2806093101770934852, guid: 6ef2e326d994d8949ba95a6aef2a3749, type: 3}
   - {fileID: 6393243366255730124, guid: 3c62f61caa2a5ce439dd430eaafb7ec9, type: 3}
+  - {fileID: 6393243366255730124, guid: fb43f3d742c89cf48999dbc674133fc8, type: 3}
   _spawnedModels: []
   _selectedModelIndex: -1
   _modelHolder: {fileID: 0}
-  loading: 0

@@ -186,10 +186,11 @@ MonoBehaviour:
   _pivot: {fileID: 4854460961287137934}
   _mouseSensitivity: 0.25
   _panSensitivity: 0.01
-  _zoomSpeed: 3
-  _panSpeed: 1
+  _zoomSensitivity: 0.5
+  _zoomSpeed: 5
   _panningLimits: {x: -5, y: 5, z: -5, w: 5}
   _zoomLimits: {x: -10, y: -2}
+  _targetZoomPos: -5
 --- !u!114 &3268550267672159494
 MonoBehaviour:
   m_ObjectHideFlags: 0
