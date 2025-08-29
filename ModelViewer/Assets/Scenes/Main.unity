@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 710ac510f7a0f7d448e440675b90222f, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -226,7 +226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5813189277854395029, guid: 717895c655c00d74d88a7bf38080f428, type: 3}
       propertyPath: m_Name
-      value: Tab
+      value: InfoTab
       objectReference: {fileID: 0}
     - target: {fileID: 6212820266237264615, guid: 717895c655c00d74d88a7bf38080f428, type: 3}
       propertyPath: m_Pivot.x
@@ -591,7 +591,7 @@ PrefabInstance:
       objectReference: {fileID: 1344179828}
     - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
       propertyPath: _tabs.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
       propertyPath: _descriptionPanel
@@ -654,6 +654,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1332723322}
     - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
+      propertyPath: _tabs.Array.data[2].TabImage
+      value: 
+      objectReference: {fileID: 1177212014}
+    - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
       propertyPath: _tabs.Array.data[0].TabButton
       value: 
       objectReference: {fileID: 2167832558731562622}
@@ -662,6 +666,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1332723323}
     - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
+      propertyPath: _tabs.Array.data[2].TabButton
+      value: 
+      objectReference: {fileID: 1179981038}
+    - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
       propertyPath: _tabs.Array.data[0].TabContent
       value: 
       objectReference: {fileID: 1421461289}
@@ -669,6 +677,22 @@ PrefabInstance:
       propertyPath: _tabs.Array.data[1].TabContent
       value: 
       objectReference: {fileID: 23549893}
+    - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
+      propertyPath: _tabs.Array.data[2].TabContent
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
+      propertyPath: _tabs.Array.data[0].TabAnimator
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
+      propertyPath: _tabs.Array.data[1].TabAnimator
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7339721580833767885, guid: 786b12f897b69f842b908b9ef141c89c, type: 3}
+      propertyPath: _tabs.Array.data[2].TabAnimator
+      value: 
+      objectReference: {fileID: 1344179826}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -962,6 +986,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1177212014 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 812648852134268605, guid: 717895c655c00d74d88a7bf38080f428, type: 3}
+  m_PrefabInstance: {fileID: 392430659}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1179981038 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5932143291799080890, guid: 717895c655c00d74d88a7bf38080f428, type: 3}
+  m_PrefabInstance: {fileID: 392430659}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1201212660
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1068,7 +1114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5813189277854395029, guid: 717895c655c00d74d88a7bf38080f428, type: 3}
       propertyPath: m_Name
-      value: Tab
+      value: EnvironmentTab
       objectReference: {fileID: 0}
     - target: {fileID: 6212820266237264615, guid: 717895c655c00d74d88a7bf38080f428, type: 3}
       propertyPath: m_Pivot.x
@@ -1564,7 +1610,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3347969002428244482, guid: 0ab02496dfbb2594aa7e7b3842276877, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4.7595344
+      value: -4.760012
       objectReference: {fileID: 0}
     - target: {fileID: 3436011474981253588, guid: 0ab02496dfbb2594aa7e7b3842276877, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2950,7 +2996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5813189277854395029, guid: 717895c655c00d74d88a7bf38080f428, type: 3}
       propertyPath: m_Name
-      value: Tab
+      value: ModelTab
       objectReference: {fileID: 0}
     - target: {fileID: 6212820266237264615, guid: 717895c655c00d74d88a7bf38080f428, type: 3}
       propertyPath: m_Pivot.x

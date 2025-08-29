@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Dark Test
   lightingType: 1
-  skyboxTexture: {fileID: 8900000, guid: dac0bb0e5abcedd4892ab6b132fb1641, type: 2}
+  skyboxTexture: {fileID: 8900000, guid: f0cd70d021e87a4469e0abf870c50e2e, type: 3}
   lightAngle: {x: 0, y: 0, z: 0}
