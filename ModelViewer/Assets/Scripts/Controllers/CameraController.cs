@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
     [Header("Limits")]
     [Tooltip("Automatically calculated:X and Y is for left and rigth. Z and W is for up and down")]
     [SerializeField] private Vector4 _panningLimits;
-    [Tooltip("X is for the near limit Y is for the far limit")]
+    [Tooltip("X is for the far limit Y is for the near limit")]
     [SerializeField] private Vector2 _zoomLimits;
 
     private Vector2 _mouseInput;
@@ -39,6 +39,7 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         _defaultRot = transform.rotation;
+        ModelManager.Instance.OnModelChanged += _ => OnModelChanged();
     }
 
     private void Update()
@@ -49,7 +50,6 @@ public class CameraController : MonoBehaviour
     private void OnEnable()
     {
         PlayerInput.actions.FindAction("Zoom").performed += CalculateZoom;
-        ModelManager.Instance.OnModelChanged += _ => OnModelChanged();
     }
 
     private void OnDisable()

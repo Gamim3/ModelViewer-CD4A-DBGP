@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform _environmentButtonHolder;
     [SerializeField] private RectTransform _descriptionPanel;
 
-    [Header("The buttons to change the render type")]
+    [Header("RenderType")]
     [SerializeField] private Button _nextRenderType;
     [SerializeField] private Button _previousRenderType;
     private int _renderTypeIndex;
@@ -35,6 +35,13 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private TMP_Text _loadingText;
+
+    [Header("Tabs")]
+    [SerializeField]private List<Tab> _tabs;
+
+    [SerializeField] private Color _activeButtonColor;
+    [SerializeField] private Color _inactiveButtonColor;
+
 
     private List<AsyncOperation> _loadingActions = new();
 
@@ -56,16 +63,31 @@ public class UIManager : MonoBehaviour
         {
             SpawnEnvironmentButton(environment);
         }
+
+        ModelManager.Instance.OnModelChanged += RefreshModelInfo;
+        ModelManager.Instance.OnModelLoaded += SpawnModelButton;
+
+        _nextRenderType.onClick.AddListener(() => ChangeRenderType(1));
+        _previousRenderType.onClick.AddListener(() => ChangeRenderType(-1));
+
+        if (_tabs.Count > 0)
+        {
+            foreach (var tab in _tabs)
+            {
+                tab.TabButton.onClick.AddListener(() => OpenTab(tab));
+            }
+            OpenTab(_tabs[0]);
+        }
     }
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         ModelManager.Instance.OnModelChanged += RefreshModelInfo;
         ModelManager.Instance.OnModelLoaded += SpawnModelButton;
 
         _nextRenderType.onClick.AddListener(() => ChangeRenderType(1));
         _previousRenderType.onClick.AddListener(() => ChangeRenderType(-1));
-    }
+    }*/
 
     private void OnDisable()
     {
@@ -144,12 +166,12 @@ public class UIManager : MonoBehaviour
     {
         if (_modelInfoText == null) return;
         _modelInfoText.text =
-        $"Naam model: " + modelinfo.modelName + "\n"
-            + "Omschrijving: " + modelinfo.description + "\n"
-            + "Naam artist: " + modelinfo.creatorName + "\n"
-            + "PollyCount = " + modelinfo.polyCount + "\n"
-            + "TriCount = " + modelinfo.triCount + "\n"
-            + "TextureCount = " + modelinfo.textureCount;
+        $"Naam model: {modelinfo.modelName}" +
+        $" \n Omschrijving: {modelinfo.description}" +
+        $" \n Naam artist: {modelinfo.creatorName}" +
+        $" \n PollyCount: { modelinfo.polyCount}" +
+        $" \n TriCount:  {modelinfo.triCount}" +
+        $" \n TextureCount: { modelinfo.textureCount}";
     }
 
 
@@ -166,8 +188,41 @@ public class UIManager : MonoBehaviour
         ModelManager.Instance.ChangeRenderType((RenderType)_renderTypeIndex);
     }
 
+    private void OpenTab(Tab tab)
+    {
+        if(tab.TabAnimator != null)
+            tab.TabAnimator.SetTrigger("Toggle");
+        else
+        {
+            foreach (var t in _tabs)
+            {
+                if(t.TabContent == null) continue;
+
+                bool isActive = t == tab;
+                t.TabContent.gameObject.SetActive(isActive);
+
+                t.TabImage.color = isActive ? _activeButtonColor : _inactiveButtonColor;
+            }
+        }
+    }
+
     public void QuitApplication()
     {
         Application.Quit();
+    }
+
+    [Serializable]
+    private class Tab
+    {
+        public Button TabButton;
+        public RectTransform TabContent;
+        public Image TabImage;
+        public Animator TabAnimator;
+
+        public Tab(Button button, RectTransform content)
+        {
+            TabButton = button;
+            TabContent = content;
+        }
     }
 }
