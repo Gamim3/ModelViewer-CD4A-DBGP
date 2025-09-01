@@ -84,6 +84,7 @@ public class CameraController : MonoBehaviour
         if (PlayerInput.actions.FindAction("Focus").WasPressedThisFrame())
         {
             transform.localPosition = new Vector3(0, 0, transform.localPosition.z);
+            _targetPanPos = new Vector2(0, 0);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
