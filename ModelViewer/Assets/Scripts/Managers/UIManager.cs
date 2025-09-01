@@ -281,6 +281,13 @@ public class UIManager : MonoBehaviour
     public void ToggleGallery(bool value)
     {
         _galleryAnimator.SetBool(_galleryCanOpenName, value);
+        if (!value)
+        {
+            foreach (var tab in _tabs)
+            {
+                tab.TabImage.color = _inactiveButtonColor;
+            }
+        }
     }
 
 

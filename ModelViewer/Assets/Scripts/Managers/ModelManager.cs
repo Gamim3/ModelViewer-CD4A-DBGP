@@ -46,6 +46,7 @@ public class ModelManager : MonoBehaviour
             Debug.LogError("SpawnPos not set up in the inspector!");
             return;
         }
+
         float startTime = Time.time;
         await PreloadModels();
         Debug.Log($"Loaded {allModels.Length} models in {Time.time - startTime} seconds");
@@ -117,6 +118,7 @@ public class ModelManager : MonoBehaviour
 
         _currentRenderType = renderType;
 
+        // Switch to a solid background to see the clay model better
         if (renderType == RenderType.Clay)
         {
             EnvironmentManager.Instance.ToggleSolidBackground(true);

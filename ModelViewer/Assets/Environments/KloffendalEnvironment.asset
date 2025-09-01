@@ -16,4 +16,4 @@ MonoBehaviour:
   previewImage: {fileID: -1339397233, guid: 246a2ae37ba149e488e9f1389e0dca86, type: 3}
   lightingType: 0
   skyboxTexture: {fileID: 8900000, guid: 6e45482d9f9bcd649a418f920022db4b, type: 3}
-  lightAngle: {x: 31.503937, y: 254.69775, z: 356.57794}
+  lightAngle: {x: 30, y: 0, z: 0}
