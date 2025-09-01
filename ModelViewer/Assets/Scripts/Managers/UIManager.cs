@@ -191,7 +191,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public IEnumerator ChangeRenderType(int value)
     {
-        if (_renderTypeCoroutine != null)
+        while (_renderTypeCoroutine != null)
         {
             yield return null;
         }
