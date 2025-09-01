@@ -140,7 +140,6 @@ public class Model : MonoBehaviour
                         {
                             mainTexture = _materials[materialIndex].HasProperty("_MainTex") ? _materials[materialIndex].mainTexture : null
                         };
-                        Debug.Log($"Set texture of unlit material to {_materials[materialIndex].name}'s MainTexture: {(_materials[materialIndex].HasProperty("_MainTex") ? _materials[materialIndex].mainTexture : "null")}");
 
                         materials[i] = unlitMat;
                         materialIndex++;

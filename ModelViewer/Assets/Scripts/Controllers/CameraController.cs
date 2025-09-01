@@ -81,10 +81,10 @@ public class CameraController : MonoBehaviour
 
         HandleZoom();
 
-        // if (PlayerInput.actions.FindAction("Focus").IsPressed())
-        // {
-        //     transform.position = new Vector3(0, 0, transform.position.z);
-        // }
+        if (PlayerInput.actions.FindAction("Focus").WasPressedThisFrame())
+        {
+            transform.localPosition = new Vector3(0, 0, transform.localPosition.z);
+        }
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -100,8 +100,8 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void CalculatePanning()
     {
-        _targetPanPos.x -= _mouseInput.x * _panSensitivity;
-        _targetPanPos.y -= _mouseInput.y * _panSensitivity;
+        _targetPanPos.x -= _mouseInput.x * _panSensitivity * Time.deltaTime;
+        _targetPanPos.y -= _mouseInput.y * _panSensitivity * Time.deltaTime;
         _targetPanPos.x = Mathf.Clamp(_targetPanPos.x, _panningLimits.x, _panningLimits.y);
         _targetPanPos.y = Mathf.Clamp(_targetPanPos.y, _panningLimits.z, _panningLimits.w);
         transform.localPosition = new Vector3(_targetPanPos.x, _targetPanPos.y, transform.localPosition.z);
