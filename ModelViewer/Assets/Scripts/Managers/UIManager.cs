@@ -81,9 +81,11 @@ public class UIManager : MonoBehaviour
             SpawnEnvironmentButton(environment);
         }
 
+        // Subscribe to model events
         ModelManager.Instance.OnModelChanged += RefreshModelInfo;
         ModelManager.Instance.OnModelLoaded += SpawnModelButton;
 
+        // Subascribe to ChangeRendertype events
         _nextRenderType.onClick.AddListener(() => StartCoroutine(ChangeRenderType(-1)));
         _previousRenderType.onClick.AddListener(() => StartCoroutine(ChangeRenderType(1)));
 
@@ -96,6 +98,7 @@ public class UIManager : MonoBehaviour
             OpenTab(_tabs[0]);
         }
 
+        // Setup quitting
         _quitButton.onClick.AddListener(() => _quitPanel.SetActive(!_quitPanel.activeSelf));
         _quitYesButton.onClick.AddListener(QuitApplication);
         _quitNoButton.onClick.AddListener(() => _quitPanel.SetActive(false));
@@ -206,6 +209,7 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
 
+        // Calculate the target value based on current index and input value
         _targetValue = _renderTypeIndex + value;
         if (_renderTypeAnimator != null)
         {
@@ -288,6 +292,9 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
+    /// <summary>
+    /// Class to hold all the references for a tab
+    /// </summary>
     [Serializable]
     private class Tab
     {

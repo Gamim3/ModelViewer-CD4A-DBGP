@@ -1,5 +1,3 @@
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -97,17 +95,24 @@ public class CameraController : MonoBehaviour
     }
 
     /// <summary>
-    /// The logic for panning in X and Y axis
+    /// The logic for panning on the X and Y axis
     /// </summary>
     private void CalculatePanning()
     {
+        //Read the mouse input and multiply it by the sensitivity for the target position
         _targetPanPos.x -= _mouseInput.x * _panSensitivity * Time.deltaTime;
         _targetPanPos.y -= _mouseInput.y * _panSensitivity * Time.deltaTime;
+
+        //Clamp the Target position to the panning limits
         _targetPanPos.x = Mathf.Clamp(_targetPanPos.x, _panningLimits.x, _panningLimits.y);
         _targetPanPos.y = Mathf.Clamp(_targetPanPos.y, _panningLimits.z, _panningLimits.w);
+
         transform.localPosition = new Vector3(_targetPanPos.x, _targetPanPos.y, transform.localPosition.z);
     }
 
+    /// <summary>
+    /// The logic for rotating the camera around the pivot point
+    /// </summary>
     private void HandleRotation()
     {
         float mouseX = _mouseInput.x * _mouseSensitivity;
@@ -119,12 +124,17 @@ public class CameraController : MonoBehaviour
         _pivot.rotation = Quaternion.Euler(_xRotation, _yRotation, 0);
     }
 
+    /// <summary>
+    /// The logic for zooming in and out with the mouse wheel
+    /// </summary>
+    /// <param name="ctx"></param>
     private void CalculateZoom(InputAction.CallbackContext ctx)
     {
         var zoomFactor = 1f;
         if (_model != null && _model.Renderer != null)
             zoomFactor = Mathf.Lerp(1, 5, Mathf.InverseLerp(1, 10, _model.Renderer.bounds.size.magnitude / 2));
 
+        //read the input and multiply it by the sensitivity and zoom factor based on model size
         Vector3 newPos = new(0, 0, ctx.ReadValue<Vector2>().y * (_zoomSensitivity * zoomFactor) + transform.localPosition.z);
         _targetZoomPos = Mathf.Clamp(newPos.z, _zoomLimits.x, _zoomLimits.y);
 
@@ -133,6 +143,10 @@ public class CameraController : MonoBehaviour
         transform.localPosition = new Vector3(_targetPanPos.x, _targetPanPos.y, transform.localPosition.z);
     }
 
+
+    /// <summary>
+    /// The Lerp for smoothly zooming in and out
+    /// </summary>
     private void HandleZoom()
     {
         transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(transform.localPosition.x, transform.localPosition.y, _targetZoomPos), _zoomSpeed * Time.deltaTime);
@@ -151,6 +165,9 @@ public class CameraController : MonoBehaviour
         _yRotation = 0;
     }
 
+    /// <summary>
+    /// Recalculates the panning and zoom limits based on the model bounds and current zoom level
+    /// </summary>
     private void RecalculateBounds()
     {
         if (_model == null || _model.Renderer == null) return;
