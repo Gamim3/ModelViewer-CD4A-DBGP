@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class UIManager : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private string _galleryCanOpenName = "CanOpen";
 
     [SerializeField] private GameObject _loadingScreen;
+    [SerializeField] private GameObject _backgroundLoadScreen;
     [SerializeField] private TMP_Text _loadingText;
 
     [Header("Tabs")]
@@ -165,14 +167,15 @@ public class UIManager : MonoBehaviour
                     loadedCount++;
                 }
             }
-            await System.Threading.Tasks.Task.Yield();
+            await Task.Yield();
 
             if (_loadingText != null)
                 _loadingText.text = $"Loading...\n{loadedCount} / {_loadingActions.Count}";
         }
 
+        await Task.Delay(1000);
         _loadingText.text = "Loading complete!";
-        await System.Threading.Tasks.Task.Delay(2000);
+        await Task.Delay(1000);
         _loadingScreen.SetActive(false);
         _loadingActions.Clear();
     }
@@ -192,11 +195,23 @@ public class UIManager : MonoBehaviour
         if (_modelInfoText == null) return;
         _modelInfoText.text =
         $"Naam model: {modelinfo.modelName}" +
-        $" \n Omschrijving: {modelinfo.description}" +
-        $" \n Naam artist: {modelinfo.creatorName}" +
-        $" \n PollyCount: {modelinfo.polyCount}" +
-        $" \n TriCount:  {modelinfo.triCount}" +
-        $" \n TextureCount: {modelinfo.textureCount}";
+        $"\nOmschrijving: {modelinfo.description}" +
+        $"\nNaam artist: {modelinfo.creatorName}" +
+        $"\nPollyCount: {modelinfo.polyCount}" +
+        $"\nTriCount:  {modelinfo.triCount}" +
+        $"\nTextureCount: {modelinfo.textureCount}";
+    }
+
+    public async void LoadScreen(float miliseconds)
+    {
+        if (_loadingText != null)
+            _loadingText.text = "Loading model...";
+
+        _backgroundLoadScreen.SetActive(true);
+
+        await Task.Delay((int)miliseconds);
+
+        _backgroundLoadScreen.SetActive(false);
     }
 
     /// <summary>

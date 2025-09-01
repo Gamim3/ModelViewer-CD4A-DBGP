@@ -22,6 +22,10 @@ public class ModelManager : MonoBehaviour
     [Space]
     [SerializeField] private Transform _modelHolder;
 
+    [Header("Loading")]
+    [Tooltip("Time in milliseconds to show loading screen when switching models")]
+    [SerializeField] private float _modelSwitchTime = 1000f;
+
     public Action<Model> OnModelLoaded;
     public Action<Model> OnModelChanged;
 
@@ -77,6 +81,10 @@ public class ModelManager : MonoBehaviour
     /// <param name="model"> Model to view </param>
     public void SelectModel(Model model)
     {
+        if (SelectedModel == model) return;
+
+        UIManager.Instance.LoadScreen(_modelSwitchTime);
+
         if (SelectedModel != null)
         {
             SelectedModel.SetActive(false);
