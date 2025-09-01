@@ -55,11 +55,8 @@ MonoBehaviour:
   - {fileID: 7237548390893825283}
   _rotationOffset: {x: 0, y: 180, z: 0}
   modelName: "Citro\xEBn frietcar"
-  description: "This is a high-fidelity 3D model of a Citro\xEBn HY van, meticulously
-    transformed into a classic \"frietcar\" (frietwagen/food truck). The model accurately
-    captures the van's iconic corrugated body panels, split windshield, and distinct
-    front grille. The design is a tribute to its enduring legacy as a versatile commercial
-    vehicle, now a staple of European street food culture."
+  description: "Een hoogwaardig 3D-model van een Citro\xEBn HY-busje, zorgvuldig
+    omgebouwd tot een klassieke \"frietkar\"."
   creatorName: Bas
   polyCount: -1
   triCount: -1
