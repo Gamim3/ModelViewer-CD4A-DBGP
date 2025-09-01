@@ -48,19 +48,23 @@ MonoBehaviour:
   _model: {fileID: 6060500775021503471}
   _materials: []
   _renderer:
-  - {fileID: 5958330486472677614}
-  - {fileID: 2942034457103528623}
+  - {fileID: 0}
+  - {fileID: 0}
   _meshFilter:
-  - {fileID: 1573587130100114485}
-  - {fileID: 1491279126995566709}
+  - {fileID: 0}
+  - {fileID: 0}
   _rotationOffset: {x: 0, y: 180, z: 0}
-  modelName: Cool model
-  description: This is a model
-  creatorName: Tyler
+  modelName: "Citro\xEBn frietcar"
+  description: "This is a high-fidelity 3D model of a Citro\xEBn HY van, meticulously
+    transformed into a classic \"frietcar\" (frietwagen/food truck). The model accurately
+    captures the van's iconic corrugated body panels, split windshield, and distinct
+    front grille. The design is a tribute to its enduring legacy as a versatile commercial
+    vehicle, now a staple of European street food culture."
+  creatorName: Bas
   polyCount: -1
   triCount: -1
   textureCount: -1
-  previewImage: {fileID: 0}
+  previewImage: {fileID: 410189702, guid: 36c513e8dd89828429178ae3af5801ff, type: 3}
 --- !u!1001 &6402518372624359102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109,35 +113,39 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4647437767818922604, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1c5d913bfa627d49adee95e234d9057, type: 2}
+    - target: {fileID: -4647437767818922604, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 45a9872599a60464e86c6a3f943870e6, type: 2}
+    - target: {fileID: -4647437767818922604, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e0433ca17062c484d94afe32de222418, type: 2}
+    - target: {fileID: -4647437767818922604, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2100000, guid: faf9563a81245544487287117cd5fea5, type: 2}
     - target: {fileID: 919132149155446097, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
       propertyPath: m_Name
       value: Citroen HY
       objectReference: {fileID: 0}
+    - target: {fileID: 5462593796051686326, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 84cfb7cffc8d3424c98a641d7123ab42, type: 2}
+    - target: {fileID: 5462593796051686326, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e0433ca17062c484d94afe32de222418, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
---- !u!33 &1491279126995566709 stripped
-MeshFilter:
-  m_CorrespondingSourceObject: {fileID: 5505728604243844811, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
-  m_PrefabInstance: {fileID: 6402518372624359102}
-  m_PrefabAsset: {fileID: 0}
---- !u!33 &1573587130100114485 stripped
-MeshFilter:
-  m_CorrespondingSourceObject: {fileID: -3671329102824883573, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
-  m_PrefabInstance: {fileID: 6402518372624359102}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &2942034457103528623 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -1148870586065048559, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
-  m_PrefabInstance: {fileID: 6402518372624359102}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &5958330486472677614 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -8472838201625917872, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
-  m_PrefabInstance: {fileID: 6402518372624359102}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6060500775021503471 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}

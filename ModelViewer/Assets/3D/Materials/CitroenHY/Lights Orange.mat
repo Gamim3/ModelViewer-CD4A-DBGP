@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5985501726433812234
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 10
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,13 +20,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Skybox
-  m_Shader: {fileID: -6465566751694194690, guid: 6fea99188b4685b408a5c8ebf98092ff, type: 3}
+  m_Name: Lights Orange
+  m_Shader: {fileID: -6465566751694194690, guid: 7c176b57c87c0234bbf25bd196ac174f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -24,14 +37,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Cubemap:
-        m_Texture: {fileID: 8900000, guid: 2fdd818775766444cb1878fc7e1227d6, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Cubemap_2:
-        m_Texture: {fileID: 8900000, guid: f0cd70d021e87a4469e0abf870c50e2e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -46,25 +51,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Lerp: 1
+    - _Auto_ON_OFF: 1
+    - _DimmingTime: 10
+    - _Float: 0
+    - _Light_ON_OFF_treshhold: 2.99
+    - _Lights_ON_OFF: 0
+    - _ON_OFF: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SolidBackgroundLerp: 0
-    - _switch: 1
+    - _Time_scale: 0.5
+    - _fresnel: 1.21
     m_Colors:
-    - _SolidBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LightColor: {r: 0.972549, g: 0.74904156, b: 0.04313727, a: 1}
+    - _LightGlowCol: {r: 17.52704, g: 0.4850203, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &2117571236222080068
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 10
