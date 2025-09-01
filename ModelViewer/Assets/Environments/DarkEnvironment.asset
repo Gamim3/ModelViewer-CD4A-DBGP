@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DarkEnvironment
   m_EditorClassIdentifier: 
   Name: Dark Test
+  previewImage: {fileID: 1378966490, guid: d541cf105de551d438955ab377fa5d4a, type: 3}
   lightingType: 1
   skyboxTexture: {fileID: 8900000, guid: f0cd70d021e87a4469e0abf870c50e2e, type: 3}
   lightAngle: {x: 0, y: 0, z: 0}

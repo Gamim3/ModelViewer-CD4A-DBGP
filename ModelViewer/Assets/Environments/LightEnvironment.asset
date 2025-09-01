@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LightEnvironment
   m_EditorClassIdentifier: 
   Name: Light Test
+  previewImage: {fileID: 1042136451, guid: 089e04cf2b8a87d4c912d5150fdbd177, type: 3}
   lightingType: 0
   skyboxTexture: {fileID: 8900000, guid: 2fdd818775766444cb1878fc7e1227d6, type: 3}
   lightAngle: {x: 0, y: 0, z: 0}
