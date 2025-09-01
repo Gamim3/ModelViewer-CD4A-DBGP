@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ece0a965984ca4c9cf476dba721f39, type: 3}
+  m_Name: KloffendalEnvironment
+  m_EditorClassIdentifier: 
+  Name: Light Test
+  previewImage: {fileID: -1339397233, guid: 246a2ae37ba149e488e9f1389e0dca86, type: 3}
+  lightingType: 0
+  skyboxTexture: {fileID: 8900000, guid: 6e45482d9f9bcd649a418f920022db4b, type: 3}
+  lightAngle: {x: 31.503937, y: 254.69775, z: 356.57794}
