@@ -58,9 +58,9 @@ MonoBehaviour:
   - {fileID: 3419660751752028965}
   - {fileID: 6287983939646301891}
   _rotationOffset: {x: 0, y: 180, z: 0}
-  modelName: Cool model
-  description: This is a model
-  creatorName: Tyler
+  modelName: Gateway
+  description: This is an example model of a gateway in a low-poly style.
+  creatorName: Danique Drost
   polyCount: -1
   triCount: -1
   textureCount: -1

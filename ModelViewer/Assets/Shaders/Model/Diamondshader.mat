@@ -110,12 +110,12 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _Fresnelpower: 3
-    - _Glitterintensity: 4.58
+    - _Glitterintensity: 4.39
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _Noisescale: 4
+    - _Noisescale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _Parallaxamplitude: 1
