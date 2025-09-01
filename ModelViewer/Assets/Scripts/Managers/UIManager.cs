@@ -193,12 +193,7 @@ public class UIManager : MonoBehaviour
     {
         if (_renderTypeCoroutine != null)
         {
-            float oldTransSpeed = _transitionSpeed;
-            while (_renderTypeCoroutine != null)
-            {
-                yield return null;
-            }
-            _transitionSpeed = oldTransSpeed;
+            yield return null;
         }
 
         _targetValue = _renderTypeIndex + value;
@@ -212,17 +207,12 @@ public class UIManager : MonoBehaviour
 
             _renderTypeCoroutine = StartCoroutine(LerpRenderType());
         }
-        else
+
+        _renderTypeIndex = _targetValue;
+
+        if (_targetValue >= 3)
         {
-            _renderTypeIndex += value;
-            if (_renderTypeIndex > 3)
-            {
-                _renderTypeIndex = 0;
-            }
-            else if (_renderTypeIndex < 0)
-            {
-                _renderTypeIndex = 3;
-            }
+            _renderTypeIndex = 0;
         }
 
         ModelManager.Instance.ChangeRenderType((RenderType)_renderTypeIndex);
@@ -248,16 +238,6 @@ public class UIManager : MonoBehaviour
         {
             _renderTypeAnimator.SetFloat(_renderTypeBlendName, 0);
         }
-
-        if (_targetValue >= 3)
-        {
-            _targetValue = 0;
-        }
-        else if (_targetValue < 0)
-        {
-            _targetValue = 3;
-        }
-        _renderTypeIndex = _targetValue;
 
         _renderTypeCoroutine = null;
     }

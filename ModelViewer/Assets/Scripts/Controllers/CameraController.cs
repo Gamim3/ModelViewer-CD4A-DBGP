@@ -127,6 +127,9 @@ public class CameraController : MonoBehaviour
         transform.position = new Vector3((_panningLimits.x + _panningLimits.y) / 2, (_panningLimits.z + _panningLimits.w) / 2, (_zoomLimits.x + _zoomLimits.y) / 2);
         _targetPanPos = new Vector2(0, 0);
         _targetZoomPos = transform.localPosition.z;
+
+        _xRotation = 0;
+        _yRotation = 0;
     }
 
     private void RecalculateBounds()
