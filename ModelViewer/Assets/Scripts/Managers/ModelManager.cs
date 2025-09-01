@@ -117,10 +117,6 @@ public class ModelManager : MonoBehaviour
 
         _currentRenderType = renderType;
 
-        if (SelectedModel == null) return;
-
-        SelectedModel.ChangeRenderMode(_currentRenderType);
-
         if (renderType == RenderType.Clay)
         {
             EnvironmentManager.Instance.ToggleSolidBackground(true);
@@ -129,6 +125,10 @@ public class ModelManager : MonoBehaviour
         {
             EnvironmentManager.Instance.ToggleSolidBackground(false);
         }
+
+        if (SelectedModel == null) return;
+
+        SelectedModel.ChangeRenderMode(_currentRenderType);
     }
 
 }

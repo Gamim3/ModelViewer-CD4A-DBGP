@@ -76,6 +76,10 @@ public class Model : MonoBehaviour
         textureCount = _materials.Count;
     }
 
+    /// <summary>
+    /// Set the model active or inactive
+    /// </summary>
+    /// <param name="active"> True = On </param>
     public void SetActive(bool active)
     {
         if (_model == null)
@@ -87,6 +91,10 @@ public class Model : MonoBehaviour
         _model.SetActive(active);
     }
 
+    /// <summary>
+    /// Change the render mode of the model based on <paramref name="renderType"/>
+    /// </summary>
+    /// <param name="renderType"> RenderType to switch to </param>
     public void ChangeRenderMode(RenderType renderType)
     {
         if (_materials.Count == 0) return;
@@ -138,7 +146,7 @@ public class Model : MonoBehaviour
                     {
                         Material unlitMat = new(Shader.Find("Universal Render Pipeline/Unlit"))
                         {
-                            mainTexture = _materials[materialIndex].HasProperty("_MainTex") ? _materials[materialIndex].mainTexture : null
+                            mainTexture = _materials[materialIndex].HasProperty("_MainTex") ? _materials[materialIndex].mainTexture : Texture2D.whiteTexture
                         };
 
                         materials[i] = unlitMat;

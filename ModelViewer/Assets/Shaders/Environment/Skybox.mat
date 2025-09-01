@@ -52,7 +52,7 @@ Material:
     - _SolidBackgroundLerp: 0
     - _switch: 1
     m_Colors:
-    - _SolidBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SolidBackgroundColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2117571236222080068
