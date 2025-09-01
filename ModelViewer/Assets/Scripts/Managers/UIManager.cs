@@ -42,9 +42,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Animator _renderTypeAnimator;
     [SerializeField] private string _renderTypeBlendName = "Blend";
     [SerializeField, Range(0.1f, 5f)] private float _transitionSpeed = 1f;
-
-    [Header("UX")]
-    [SerializeField] private Animator _uiAnimator;
+    private Coroutine _renderTypeCoroutine;
+    private int _targetValue;
 
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private TMP_Text _loadingText;
@@ -80,8 +79,8 @@ public class UIManager : MonoBehaviour
         ModelManager.Instance.OnModelChanged += RefreshModelInfo;
         ModelManager.Instance.OnModelLoaded += SpawnModelButton;
 
-        _nextRenderType.onClick.AddListener(() => ChangeRenderType(1));
-        _previousRenderType.onClick.AddListener(() => ChangeRenderType(-1));
+        _nextRenderType.onClick.AddListener(() => StartCoroutine(ChangeRenderType(-1)));
+        _previousRenderType.onClick.AddListener(() => StartCoroutine(ChangeRenderType(1)));
 
         if (_tabs.Count > 0)
         {
@@ -190,39 +189,77 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Handles the changing of the rendertexture from the UI side and gives te call to the ModelManager
     /// </summary>
-    public void ChangeRenderType(int index)
+    public IEnumerator ChangeRenderType(int value)
     {
-        if (_renderTypeAnimator != null)
+        if (_renderTypeCoroutine != null)
         {
-            float targetValue = _renderTypeIndex + index;
-            if (_renderTypeIndex == 0 && index == -1)
+            float oldTransSpeed = _transitionSpeed;
+            while (_renderTypeCoroutine != null)
             {
-                _renderTypeAnimator.SetFloat(_renderTypeBlendName, 3);
-                targetValue = 2;
+                yield return null;
             }
-
-            IEnumerator LerpRenderType()
-            {
-                while (Mathf.Abs(_renderTypeAnimator.GetFloat(_renderTypeBlendName) - targetValue) > 0.01f)
-                {
-                    float currentValue = _renderTypeAnimator.GetFloat(_renderTypeBlendName);
-                    float newValue = Mathf.MoveTowards(currentValue, targetValue, _transitionSpeed * Time.deltaTime);
-                    _renderTypeAnimator.SetFloat(_renderTypeBlendName, newValue);
-                    yield return null;
-                }
-                _renderTypeAnimator.SetFloat(_renderTypeBlendName, targetValue);
-
-                if (targetValue == 3)
-                {
-                    _renderTypeAnimator.SetFloat(_renderTypeBlendName, 0);
-                }
-            }
-            StartCoroutine(LerpRenderType());
+            _transitionSpeed = oldTransSpeed;
         }
 
-        _renderTypeIndex = (_renderTypeIndex + index) % Enum.GetNames(typeof(RenderType)).Length;
+        _targetValue = _renderTypeIndex + value;
+        if (_renderTypeAnimator != null)
+        {
+            if (_renderTypeIndex == 0 && value == -1)
+            {
+                _renderTypeAnimator.SetFloat(_renderTypeBlendName, 3);
+                _targetValue = 2;
+            }
+
+            _renderTypeCoroutine = StartCoroutine(LerpRenderType());
+        }
+        else
+        {
+            _renderTypeIndex += value;
+            if (_renderTypeIndex > 3)
+            {
+                _renderTypeIndex = 0;
+            }
+            else if (_renderTypeIndex < 0)
+            {
+                _renderTypeIndex = 3;
+            }
+        }
 
         ModelManager.Instance.ChangeRenderType((RenderType)_renderTypeIndex);
+        yield return null;
+    }
+
+    /// <summary>
+    /// Handles the lerping of the render type animation
+    /// </summary>
+    private IEnumerator LerpRenderType()
+    {
+        while (Mathf.Abs(_renderTypeAnimator.GetFloat(_renderTypeBlendName) - _targetValue) > 0.01f)
+        {
+            float currentValue = _renderTypeAnimator.GetFloat(_renderTypeBlendName);
+            float newValue = Mathf.MoveTowards(currentValue, _targetValue, _transitionSpeed * Time.deltaTime);
+            _renderTypeAnimator.SetFloat(_renderTypeBlendName, newValue);
+            yield return null;
+        }
+
+        _renderTypeAnimator.SetFloat(_renderTypeBlendName, _targetValue);
+
+        if (_targetValue == 3)
+        {
+            _renderTypeAnimator.SetFloat(_renderTypeBlendName, 0);
+        }
+
+        if (_targetValue >= 3)
+        {
+            _targetValue = 0;
+        }
+        else if (_targetValue < 0)
+        {
+            _targetValue = 3;
+        }
+        _renderTypeIndex = _targetValue;
+
+        _renderTypeCoroutine = null;
     }
 
     /// <summary>
