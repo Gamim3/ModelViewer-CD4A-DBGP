@@ -1,5 +1,7 @@
 using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
@@ -44,6 +46,8 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         HandleInput();
     }
 
@@ -74,7 +78,21 @@ public class CameraController : MonoBehaviour
         {
             CalculatePanning();
         }
+
         HandleZoom();
+
+        // if (PlayerInput.actions.FindAction("Focus").IsPressed())
+        // {
+        //     transform.position = new Vector3(0, 0, transform.position.z);
+        // }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                UIManager.Instance.ToggleGallery(false);
+            }
+        }
     }
 
     /// <summary>

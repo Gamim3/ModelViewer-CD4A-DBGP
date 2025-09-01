@@ -212,6 +212,15 @@ public class EnvironmentManager : MonoBehaviour
             yield break;
         }
 
+        if (_currentTextureIndex == 0)
+        {
+            Skybox.SetTexture(_skyBoxTextureOneName, targetTexture);
+        }
+        else
+        {
+            Skybox.SetTexture(_skyBoxTextureTwoName, targetTexture);
+        }
+
         while (Skybox.GetFloat(_skyBoxLerpName) != _currentTextureIndex)
         {
             var currentLerpValue = Skybox.GetFloat(_skyBoxLerpName);

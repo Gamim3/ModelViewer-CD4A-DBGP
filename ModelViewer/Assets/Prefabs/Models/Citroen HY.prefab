@@ -48,11 +48,11 @@ MonoBehaviour:
   _model: {fileID: 6060500775021503471}
   _materials: []
   _renderer:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1375102654879239432}
+  - {fileID: 7447453433906653994}
   _meshFilter:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8019953977901358969}
+  - {fileID: 7237548390893825283}
   _rotationOffset: {x: 0, y: 180, z: 0}
   modelName: "Citro\xEBn frietcar"
   description: "This is a high-fidelity 3D model of a Citro\xEBn HY van, meticulously
@@ -146,6 +146,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+--- !u!23 &1375102654879239432 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5462593796051686326, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+  m_PrefabInstance: {fileID: 6402518372624359102}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6060500775021503471 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
@@ -154,5 +159,20 @@ GameObject:
 --- !u!4 &6868246669319911765 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+  m_PrefabInstance: {fileID: 6402518372624359102}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &7237548390893825283 stripped
+MeshFilter:
+  m_CorrespondingSourceObject: {fileID: -4851855212727307331, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+  m_PrefabInstance: {fileID: 6402518372624359102}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7447453433906653994 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -4647437767818922604, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
+  m_PrefabInstance: {fileID: 6402518372624359102}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &8019953977901358969 stripped
+MeshFilter:
+  m_CorrespondingSourceObject: {fileID: -5217761914361921081, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
   m_PrefabInstance: {fileID: 6402518372624359102}
   m_PrefabAsset: {fileID: 0}

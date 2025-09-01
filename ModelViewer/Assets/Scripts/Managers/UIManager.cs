@@ -45,6 +45,11 @@ public class UIManager : MonoBehaviour
     private Coroutine _renderTypeCoroutine;
     private int _targetValue;
 
+    [Header("Gallery")]
+    [SerializeField] private Button[] _galleryButtons;
+    [SerializeField] private Animator _galleryAnimator;
+    [SerializeField] private string _galleryCanOpenName = "CanOpen";
+
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private TMP_Text _loadingText;
 
@@ -100,6 +105,11 @@ public class UIManager : MonoBehaviour
 
         if (_modelInfoText != null)
             _modelInfoText.text = "No model selected";
+
+        foreach (var button in _galleryButtons)
+        {
+            button.onClick.AddListener(() => ToggleGallery(true));
+        }
     }
 
     private void OnDisable()
@@ -263,6 +273,12 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+    public void ToggleGallery(bool value)
+    {
+        _galleryAnimator.SetBool(_galleryCanOpenName, value);
+    }
+
 
     private void QuitApplication()
     {

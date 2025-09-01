@@ -26,7 +26,7 @@ public class Model : MonoBehaviour
     public Sprite previewImage;
     public Renderer Renderer => _renderer != null && _renderer.Length > 0 ? _renderer[0] : null;
 
-    void Start()
+    private void Start()
     {
         if (_model == null)
         {
@@ -38,7 +38,7 @@ public class Model : MonoBehaviour
         if (_meshFilter == null)
         {
             //_meshFilter = _model.GetComponentInChildren<MeshFilter>();
-            if (_meshFilter == null)
+            if (_meshFilter.Length == 0)
             {
                 Debug.LogError($"MeshFilter not setup on {name}!");
                 SetActive(false);
@@ -101,7 +101,7 @@ public class Model : MonoBehaviour
                     Material[] materials = new Material[rend.materials.Length];
                     for (int i = 0; i < materials.Length; i++)
                     {
-                        
+
                         materials[i] = _materials[materialIndex];
                         materialIndex++;
                     }
@@ -128,25 +128,22 @@ public class Model : MonoBehaviour
 
 
                 }
-                    //for (int i = 0; i < rend.materials.Length; i++)
-                    //{
-                    //    rend.materials[i] = clayMat;
-                    //    Debug.Log(rend.materials[i] = clayMat);
-                    //}
-
                 break;
             case RenderType.Unlit:
-                Material unlitMat = new(Shader.Find("Universal Render Pipeline/Unlit"))
-                {
-                    mainTexture = _materials[0].mainTexture
-                };
-
+                materialIndex = 0;
                 foreach (var rend in _renderer)
                 {
                     Material[] materials = rend.materials;
                     for (int i = 0; i < materials.Length; i++)
                     {
+                        Material unlitMat = new(Shader.Find("Universal Render Pipeline/Unlit"))
+                        {
+                            mainTexture = _materials[materialIndex].HasProperty("_MainTex") ? _materials[materialIndex].mainTexture : null
+                        };
+                        Debug.Log($"Set texture of unlit material to {_materials[materialIndex].name}'s MainTexture: {(_materials[materialIndex].HasProperty("_MainTex") ? _materials[materialIndex].mainTexture : "null")}");
+
                         materials[i] = unlitMat;
+                        materialIndex++;
                     }
 
                     rend.materials = materials;
