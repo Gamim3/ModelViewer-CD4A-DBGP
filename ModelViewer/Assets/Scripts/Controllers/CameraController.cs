@@ -102,7 +102,9 @@ public class CameraController : MonoBehaviour
 
     private void CalculateZoom(InputAction.CallbackContext ctx)
     {
-        var zoomFactor = Mathf.Lerp(1, 5, Mathf.InverseLerp(1, 10, _model.Renderer.bounds.size.magnitude / 2));
+        var zoomFactor = 1f;
+        if (_model != null && _model.Renderer != null)
+            zoomFactor = Mathf.Lerp(1, 5, Mathf.InverseLerp(1, 10, _model.Renderer.bounds.size.magnitude / 2));
 
         Vector3 newPos = new(0, 0, ctx.ReadValue<Vector2>().y * (_zoomSensitivity * zoomFactor) + transform.localPosition.z);
         _targetZoomPos = Mathf.Clamp(newPos.z, _zoomLimits.x, _zoomLimits.y);
