@@ -1,12 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Model : MonoBehaviour
 {
     [Header("Art References")]
-    [SerializeField] GameObject _model;
-    [SerializeField] Material[] _materials;
-    [SerializeField] Renderer[] _renderer;
-    [SerializeField] MeshFilter[] _meshFilter;
+    [SerializeField] private GameObject _model;
+    [SerializeField] private List<Material> _materials = new();
+    [SerializeField] private Renderer[] _renderer;
+    [SerializeField] private MeshFilter[] _meshFilter;
+    [SerializeField] private Vector3 _rotationOffset;
+
+    public Vector3 RotationOffset => _rotationOffset;
 
     [Header("Model Info")]
     public string modelName = "Cool model";
@@ -54,20 +58,22 @@ public class Model : MonoBehaviour
         }
 
 
-        foreach (var rend in _renderer)
+        for (int i = 0; i < _renderer.Length; i++)
         {
-            if(rend == null) continue;
-            _materials = rend.materials;
-            textureCount += rend.materials.Length;
-
+            if (_renderer[i] == null) continue;
+            for (int j = 0; j < _renderer[i].materials.Length; j++)
+            {
+                _materials.Add(new Material(_renderer[i].materials[j]));
+            }
         }
+
 
         for (int i = 0; i < _meshFilter.Length; i++)
         {
             polyCount += _meshFilter[i].mesh.vertexCount;
-            triCount = _meshFilter[i].mesh.triangles.Length;
-
+            triCount += _meshFilter[i].mesh.triangles.Length;
         }
+        textureCount = _materials.Count;
     }
 
     public void SetActive(bool active)
@@ -83,12 +89,24 @@ public class Model : MonoBehaviour
 
     public void ChangeRenderMode(RenderType renderType)
     {
+        if (_materials.Count == 0) return;
+
         switch (renderType)
         {
             case RenderType.Textured:
+                int materialIndex = 0;
+
                 foreach (var rend in _renderer)
                 {
-                    rend.materials = _materials;
+                    Material[] materials = new Material[rend.materials.Length];
+                    for (int i = 0; i < materials.Length; i++)
+                    {
+                        
+                        materials[i] = _materials[materialIndex];
+                        materialIndex++;
+                    }
+
+                    rend.materials = materials;
                 }
 
                 break;
@@ -100,8 +118,21 @@ public class Model : MonoBehaviour
 
                 foreach (var rend in _renderer)
                 {
-                    rend.material = clayMat;
+                    Material[] materials = rend.materials;
+                    for (int i = 0; i < materials.Length; i++)
+                    {
+                        materials[i] = clayMat;
+                    }
+
+                    rend.materials = materials;
+
+
                 }
+                    //for (int i = 0; i < rend.materials.Length; i++)
+                    //{
+                    //    rend.materials[i] = clayMat;
+                    //    Debug.Log(rend.materials[i] = clayMat);
+                    //}
 
                 break;
             case RenderType.Unlit:
@@ -112,7 +143,13 @@ public class Model : MonoBehaviour
 
                 foreach (var rend in _renderer)
                 {
-                    rend.material = unlitMat;
+                    Material[] materials = rend.materials;
+                    for (int i = 0; i < materials.Length; i++)
+                    {
+                        materials[i] = unlitMat;
+                    }
+
+                    rend.materials = materials;
                 }
                 break;
 

@@ -53,6 +53,7 @@ MonoBehaviour:
   _meshFilter:
   - {fileID: 1573587130100114485}
   - {fileID: 1491279126995566709}
+  _rotationOffset: {x: 0, y: 180, z: 0}
   modelName: Cool model
   description: This is a model
   creatorName: Tyler
@@ -82,7 +83,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
       propertyPath: m_LocalRotation.x
@@ -90,7 +91,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
       propertyPath: m_LocalRotation.z
@@ -102,7 +103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7bd3ea437f3bd647a7754968a341d2f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

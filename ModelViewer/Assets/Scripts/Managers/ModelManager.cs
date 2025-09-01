@@ -60,7 +60,7 @@ public class ModelManager : MonoBehaviour
         for (int i = 0; i < allModels.Length; i++)
         {
             var modelToSpawn = allModels[i];
-            var spawnOperation = InstantiateAsync(modelToSpawn, _modelHolder);
+            var spawnOperation = InstantiateAsync(modelToSpawn, _modelHolder, Vector3.zero, Quaternion.Euler(modelToSpawn.RotationOffset));
             UIManager.Instance.AddLoadingAction(spawnOperation);
             var spawnedModel = await spawnOperation;
             _spawnedModels.Add(spawnedModel[0]);
