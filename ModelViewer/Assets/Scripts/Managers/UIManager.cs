@@ -51,9 +51,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Animator _galleryAnimator;
     [SerializeField] private string _galleryCanOpenName = "CanOpen";
 
+    [Header("Loading Screen")]
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private GameObject _backgroundLoadScreen;
     [SerializeField] private TMP_Text _loadingText;
+    private List<AsyncOperation> _loadingActions = new();
 
     [Header("Tabs")]
     [SerializeField] private List<Tab> _tabs;
@@ -62,7 +64,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Color _inactiveButtonColor;
 
 
-    private List<AsyncOperation> _loadingActions = new();
 
     private void Awake()
     {
@@ -167,10 +168,18 @@ public class UIManager : MonoBehaviour
                     loadedCount++;
                 }
             }
-            await Task.Yield();
 
             if (_loadingText != null)
-                _loadingText.text = $"Loading...\n{loadedCount} / {_loadingActions.Count}";
+            {
+                if (_loadingText.text != $"Loading...\n{loadedCount} / {_loadingActions.Count}")
+                {
+                    _loadingText.text = $"Loading...\n{loadedCount} / {_loadingActions.Count}";
+                    Debug.Log($"Updated loadtext: done {loadedCount} out of {_loadingActions.Count}");
+                }
+
+            }
+
+            await Task.Yield();
         }
 
         await Task.Delay(1000);
