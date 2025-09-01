@@ -5,8 +5,8 @@ public class Model : MonoBehaviour
     [Header("Art References")]
     [SerializeField] GameObject _model;
     [SerializeField] Material[] _materials;
-    [SerializeField] Renderer _renderer;
-    [SerializeField] MeshFilter _meshFilter;
+    [SerializeField] Renderer[] _renderer;
+    [SerializeField] MeshFilter[] _meshFilter;
 
     [Header("Model Info")]
     public string modelName = "Cool model";
@@ -20,7 +20,7 @@ public class Model : MonoBehaviour
     public int textureCount = -1;
     [Space]
     public Sprite previewImage;
-    public Renderer Renderer => _renderer != null ? _renderer : null;
+    public Renderer Renderer => _renderer != null && _renderer.Length > 0 ? _renderer[0] : null;
 
     void Start()
     {
@@ -33,7 +33,7 @@ public class Model : MonoBehaviour
 
         if (_meshFilter == null)
         {
-            _meshFilter = _model.GetComponent<MeshFilter>();
+            //_meshFilter = _model.GetComponentInChildren<MeshFilter>();
             if (_meshFilter == null)
             {
                 Debug.LogError($"MeshFilter not setup on {name}!");
@@ -44,7 +44,7 @@ public class Model : MonoBehaviour
 
         if (_renderer == null)
         {
-            _renderer = _model.GetComponent<Renderer>();
+            //_renderer = _model.GetComponent<Renderer>();
             if (_renderer == null)
             {
                 Debug.LogError($"Renderer not setup on {name}!");
@@ -53,11 +53,21 @@ public class Model : MonoBehaviour
             }
         }
 
-        _materials = _renderer.materials;
 
-        polyCount = _meshFilter.mesh.vertexCount;
-        triCount = _meshFilter.mesh.triangles.Length;
-        textureCount = _renderer.materials.Length;
+        foreach (var rend in _renderer)
+        {
+            if(rend == null) continue;
+            _materials = rend.materials;
+            textureCount += rend.materials.Length;
+
+        }
+
+        for (int i = 0; i < _meshFilter.Length; i++)
+        {
+            polyCount += _meshFilter[i].mesh.vertexCount;
+            triCount = _meshFilter[i].mesh.triangles.Length;
+
+        }
     }
 
     public void SetActive(bool active)
@@ -76,14 +86,22 @@ public class Model : MonoBehaviour
         switch (renderType)
         {
             case RenderType.Textured:
-                _renderer.materials = _materials;
+                foreach (var rend in _renderer)
+                {
+                    rend.materials = _materials;
+                }
+
                 break;
             case RenderType.Clay:
                 Material clayMat = new(Shader.Find("Universal Render Pipeline/Lit"))
                 {
                     color = Color.gray
                 };
-                _renderer.material = clayMat;
+
+                foreach (var rend in _renderer)
+                {
+                    rend.material = clayMat;
+                }
 
                 break;
             case RenderType.Unlit:
@@ -92,7 +110,10 @@ public class Model : MonoBehaviour
                     mainTexture = _materials[0].mainTexture
                 };
 
-                _renderer.material = unlitMat;
+                foreach (var rend in _renderer)
+                {
+                    rend.material = unlitMat;
+                }
                 break;
 
         }
