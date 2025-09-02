@@ -115,7 +115,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _Noisescale: 1
+    - _Noisescale: 6
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _Parallaxamplitude: 1
@@ -138,7 +138,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Diamondcolor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Glittercolor: {r: 1, g: 0.6471698, b: 0.8712712, a: 0}
+    - _Glittercolor: {r: 0.93207544, g: 0.68255055, b: 0.59617656, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
