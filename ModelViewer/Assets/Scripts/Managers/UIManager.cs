@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
     [Header("RenderType")]
     [SerializeField] private Button _nextRenderType;
     [SerializeField] private Button _previousRenderType;
+    [Space]
     private int _renderTypeIndex;
     [SerializeField] private Animator _renderTypeAnimator;
     [SerializeField] private string _renderTypeBlendName = "Blend";
@@ -55,10 +56,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Animator _startLoadingAnimator;
     [SerializeField] private Animator _modelLoadingAnimator;
     [SerializeField] private string _loadingBlendName = "Blend";
-    [SerializeField, Range(0.1f, 5f)] private float _loadingTransitionSpeed = 2f;
+    [SerializeField, Range(0.1f, 10f)] private float _loadingTransitionSpeed = 4f;
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private GameObject _backgroundLoadScreen;
     [SerializeField] private TMP_Text _loadingText;
+
     private List<AsyncOperation> _loadingActions = new();
     private List<AsyncOperation> _completedLoadingActions = new();
 
@@ -67,8 +69,6 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Color _activeButtonColor;
     [SerializeField] private Color _inactiveButtonColor;
-
-
 
     private void Awake()
     {
@@ -93,10 +93,11 @@ public class UIManager : MonoBehaviour
         ModelManager.Instance.OnModelChanged += RefreshModelInfo;
         ModelManager.Instance.OnModelLoaded += SpawnModelButton;
 
-        // Subascribe to ChangeRendertype events
+        // Subscribe to ChangeRendertype events
         _nextRenderType.onClick.AddListener(() => StartCoroutine(ChangeRenderType(-1)));
         _previousRenderType.onClick.AddListener(() => StartCoroutine(ChangeRenderType(1)));
 
+        // Setup tabs
         if (_tabs.Count > 0)
         {
             foreach (var tab in _tabs)
@@ -111,6 +112,7 @@ public class UIManager : MonoBehaviour
         _quitNoButton.onClick.AddListener(() => _quitPanel.SetActive(false));
         _quitPanel.SetActive(false);
 
+        // Setup reset view
         _resetViewButton.onClick.AddListener(() => _cameraController.ResetCamera());
 
         if (_modelInfoText != null)
@@ -166,6 +168,8 @@ public class UIManager : MonoBehaviour
         _startLoadingAnimator.SetFloat(_loadingBlendName, 1);
 
         int loadedCount = 0;
+
+        // Operation checking
         while (_loadingActions.Count > loadedCount)
         {
             for (int i = 0; i < _loadingActions.Count; i++)
@@ -189,6 +193,7 @@ public class UIManager : MonoBehaviour
         _loadingText.text = "Loading complete!";
         await Task.Delay(1000);
 
+        // Fading out
         while (_startLoadingAnimator.GetFloat(_loadingBlendName) > 0)
         {
             float currentValue = _startLoadingAnimator.GetFloat(_loadingBlendName);
@@ -203,6 +208,10 @@ public class UIManager : MonoBehaviour
         _loadingActions.Clear();
     }
 
+    /// <summary>
+    /// Adds a loading action to the list and triggers the loadscreen
+    /// </summary>
+    /// <param name="operation"> Operation to show loading screen for </param>
     public void AddLoadingAction(AsyncOperation operation)
     {
         _loadingActions.Add(operation);
@@ -210,19 +219,19 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets all the inforation of a model in the info UI based on last clicked model.
+    /// Sets all the inforation of a model in the info UI based on <paramref name="model"/>.
     /// </summary>
-    /// <param name="modelinfo"></param>
-    private void RefreshModelInfo(Model modelinfo)
+    /// <param name="model"></param>
+    private void RefreshModelInfo(Model model)
     {
         if (_modelInfoText == null) return;
         _modelInfoText.text =
-        $"Naam model: {modelinfo.modelName}" +
-        $"\nOmschrijving: {modelinfo.description}" +
-        $"\nNaam artist: {modelinfo.creatorName}" +
-        $"\nPollyCount: {modelinfo.polyCount}" +
-        $"\nTriCount:  {modelinfo.triCount}" +
-        $"\nTextureCount: {modelinfo.textureCount}";
+        $"Naam model: {model.modelName}" +
+        $"\nOmschrijving: {model.description}" +
+        $"\nNaam artist: {model.creatorName}" +
+        $"\nPollyCount: {model.polyCount}" +
+        $"\nTriCount:  {model.triCount}" +
+        $"\nTextureCount: {model.textureCount}";
     }
 
     /// <summary>
@@ -231,7 +240,6 @@ public class UIManager : MonoBehaviour
     /// <param name="milliseconds"> Milliseconds  </param>
     public async void LoadScreen(float milliseconds)
     {
-        Debug.Log($"Loading screen for {milliseconds} milliseconds");
         if (_loadingText != null)
             _loadingText.text = "Loading model...";
 
@@ -239,6 +247,7 @@ public class UIManager : MonoBehaviour
 
         _backgroundLoadScreen.SetActive(true);
 
+        // Fading in
         while (_modelLoadingAnimator.GetFloat(_loadingBlendName) < 1)
         {
             float currentValue = _modelLoadingAnimator.GetFloat(_loadingBlendName);
@@ -252,10 +261,13 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
+        // Ensure exact value at the end
         _modelLoadingAnimator.SetFloat(_loadingBlendName, 1);
 
+        // If we are already over the time, skip the wait
         await Task.Delay((int)milliseconds - (int)currentLoadTime);
 
+        // Fading out
         while (_modelLoadingAnimator.GetFloat(_loadingBlendName) > 0)
         {
             float currentValue = _modelLoadingAnimator.GetFloat(_loadingBlendName);
@@ -270,7 +282,6 @@ public class UIManager : MonoBehaviour
         }
 
         _modelLoadingAnimator.SetFloat(_loadingBlendName, 0);
-
         _backgroundLoadScreen.SetActive(false);
     }
 
@@ -313,6 +324,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     private IEnumerator LerpRenderType()
     {
+        // Lerp to the target value
         while (Mathf.Abs(_renderTypeAnimator.GetFloat(_renderTypeBlendName) - _targetValue) > 0.01f)
         {
             float currentValue = _renderTypeAnimator.GetFloat(_renderTypeBlendName);
@@ -321,8 +333,10 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
 
+        // Ensure exact value at the end
         _renderTypeAnimator.SetFloat(_renderTypeBlendName, _targetValue);
 
+        // Reset to 0 if we were at the fake 3 position
         if (_targetValue == 3)
         {
             _renderTypeAnimator.SetFloat(_renderTypeBlendName, 0);
@@ -353,6 +367,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Toggles the gallery open or closed and handles the animation
+    /// </summary>
+    /// <param name="value"> True = open </param>
     public void ToggleGallery(bool value)
     {
         _galleryAnimator.SetBool(_galleryCanOpenName, value);
@@ -364,7 +382,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
 
     private void QuitApplication()
     {
@@ -384,11 +401,5 @@ public class UIManager : MonoBehaviour
         public RectTransform TabContent;
         public Image TabImage;
         public Animator TabAnimator;
-
-        public Tab(Button button, RectTransform content)
-        {
-            TabButton = button;
-            TabContent = content;
-        }
     }
 }

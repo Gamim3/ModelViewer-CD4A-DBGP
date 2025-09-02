@@ -103,21 +103,6 @@ public class ModelManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Selects a model based on it's index in the list
-    /// </summary>
-    /// <param name="index"> Index of model to view </param>
-    public void SelectModel(int index)
-    {
-        if (index < 0 || index >= _spawnedModels.Count)
-        {
-            SelectModel(null);
-            return;
-        }
-
-        SelectModel(_spawnedModels[index]);
-    }
-
-    /// <summary>
     /// Changes the render type of the currently selected model
     /// </summary>
     /// <param name="renderType"> RenderType to switch to </param>
