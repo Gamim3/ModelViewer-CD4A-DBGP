@@ -37,7 +37,6 @@ public class Model : MonoBehaviour
 
         if (_meshFilter == null)
         {
-            //_meshFilter = _model.GetComponentInChildren<MeshFilter>();
             if (_meshFilter.Length == 0)
             {
                 Debug.LogError($"MeshFilter not setup on {name}!");
@@ -48,7 +47,6 @@ public class Model : MonoBehaviour
 
         if (_renderer == null)
         {
-            //_renderer = _model.GetComponent<Renderer>();
             if (_renderer == null)
             {
                 Debug.LogError($"Renderer not setup on {name}!");
@@ -133,8 +131,6 @@ public class Model : MonoBehaviour
                     }
 
                     rend.materials = materials;
-
-
                 }
                 break;
             case RenderType.Unlit:

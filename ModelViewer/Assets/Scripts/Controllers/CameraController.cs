@@ -62,7 +62,7 @@ public class CameraController : MonoBehaviour
 
 
     /// <summary>
-    /// continusely reads mouse inputs and checks if rotate or panning button is pressed
+    /// continusely reads mouse inputs and checks if an input button is pressed
     /// </summary>
     private void HandleInput()
     {
@@ -138,8 +138,10 @@ public class CameraController : MonoBehaviour
         Vector3 newPos = new(0, 0, ctx.ReadValue<Vector2>().y * (_zoomSensitivity * zoomFactor) + transform.localPosition.z);
         _targetZoomPos = Mathf.Clamp(newPos.z, _zoomLimits.x, _zoomLimits.y);
 
+        // After zooming, also adjust the panning limits to keep the model in view
         _targetPanPos.x = Mathf.Clamp(_targetPanPos.x, _panningLimits.x, _panningLimits.y);
         _targetPanPos.y = Mathf.Clamp(_targetPanPos.y, _panningLimits.z, _panningLimits.w);
+
         transform.localPosition = new Vector3(_targetPanPos.x, _targetPanPos.y, transform.localPosition.z);
     }
 
@@ -154,6 +156,10 @@ public class CameraController : MonoBehaviour
         RecalculateBounds();
     }
 
+
+    /// <summary>
+    /// Resets the camera to the default rotation and position
+    /// </summary>
     public void ResetCamera()
     {
         _pivot.rotation = _defaultRot;

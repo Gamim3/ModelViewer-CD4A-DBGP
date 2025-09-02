@@ -85,32 +85,6 @@ public class EnvironmentManager : MonoBehaviour
 
     }
 
-    // DEBUG REMOVE LATER
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ChangeEnvironment(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ChangeEnvironment(1);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            ChangeEnvironment(2);
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            ChangeLighting(LightingType.Light);
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            ChangeLighting(LightingType.Dark);
-        }
-    }
-
     /// <summary>
     /// Changes the current environment to the <paramref name="newEnvironment"/>.
     /// </summary>
