@@ -79,11 +79,12 @@ public class ModelManager : MonoBehaviour
     /// Selects a model based on reference
     /// </summary>
     /// <param name="model"> Model to view </param>
-    public void SelectModel(Model model)
+    public async void SelectModel(Model model)
     {
         if (SelectedModel == model) return;
 
         UIManager.Instance.LoadScreen(_modelSwitchTime);
+        await Task.Delay((int)_modelSwitchTime / 2);
 
         if (SelectedModel != null)
         {

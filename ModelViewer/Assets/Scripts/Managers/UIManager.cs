@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour
     private int _renderTypeIndex;
     [SerializeField] private Animator _renderTypeAnimator;
     [SerializeField] private string _renderTypeBlendName = "Blend";
-    [SerializeField, Range(0.1f, 5f)] private float _transitionSpeed = 1f;
+    [SerializeField, Range(0.1f, 5f)] private float _renderTransitionSpeed = 1f;
     private Coroutine _renderTypeCoroutine;
     private int _targetValue;
 
@@ -52,10 +52,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private string _galleryCanOpenName = "CanOpen";
 
     [Header("Loading Screen")]
+    [SerializeField] private Animator _startLoadingAnimator;
+    [SerializeField] private Animator _modelLoadingAnimator;
+    [SerializeField] private string _loadingBlendName = "Blend";
+    [SerializeField, Range(0.1f, 5f)] private float _loadingTransitionSpeed = 2f;
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private GameObject _backgroundLoadScreen;
     [SerializeField] private TMP_Text _loadingText;
     private List<AsyncOperation> _loadingActions = new();
+    private List<AsyncOperation> _completedLoadingActions = new();
 
     [Header("Tabs")]
     [SerializeField] private List<Tab> _tabs;
@@ -98,7 +103,6 @@ public class UIManager : MonoBehaviour
             {
                 tab.TabButton.onClick.AddListener(() => OpenTab(tab));
             }
-            OpenTab(_tabs[0]);
         }
 
         // Setup quitting
@@ -157,27 +161,26 @@ public class UIManager : MonoBehaviour
     {
         if (_loadingScreen.activeSelf) return;
 
+        _loadingScreen.SetActive(true);
+
+        _startLoadingAnimator.SetFloat(_loadingBlendName, 1);
+
         int loadedCount = 0;
         while (_loadingActions.Count > loadedCount)
         {
-            _loadingScreen.SetActive(true);
             for (int i = 0; i < _loadingActions.Count; i++)
             {
+                if (_completedLoadingActions.Contains(_loadingActions[i]))
+                    continue;
+
                 if (_loadingActions[i].isDone)
                 {
+                    _completedLoadingActions.Add(_loadingActions[i]);
                     loadedCount++;
                 }
             }
 
-            if (_loadingText != null)
-            {
-                if (_loadingText.text != $"Loading...\n{loadedCount} / {_loadingActions.Count}")
-                {
-                    _loadingText.text = $"Loading...\n{loadedCount} / {_loadingActions.Count}";
-                    Debug.Log($"Updated loadtext: done {loadedCount} out of {_loadingActions.Count}");
-                }
-
-            }
+            _loadingText.text = $"Loading...\n{loadedCount} / {_loadingActions.Count}";
 
             await Task.Yield();
         }
@@ -185,6 +188,17 @@ public class UIManager : MonoBehaviour
         await Task.Delay(1000);
         _loadingText.text = "Loading complete!";
         await Task.Delay(1000);
+
+        while (_startLoadingAnimator.GetFloat(_loadingBlendName) > 0)
+        {
+            float currentValue = _startLoadingAnimator.GetFloat(_loadingBlendName);
+            float newValue = Mathf.MoveTowards(currentValue, 0, Time.deltaTime * _loadingTransitionSpeed);
+            _startLoadingAnimator.SetFloat(_loadingBlendName, newValue);
+            await Task.Yield();
+        }
+
+        _startLoadingAnimator.SetFloat(_loadingBlendName, 0);
+
         _loadingScreen.SetActive(false);
         _loadingActions.Clear();
     }
@@ -211,14 +225,51 @@ public class UIManager : MonoBehaviour
         $"\nTextureCount: {modelinfo.textureCount}";
     }
 
-    public async void LoadScreen(float miliseconds)
+    /// <summary>
+    /// Turns on a loadingscreen behind the UI for <paramref name="milliseconds"/> milliseconds
+    /// </summary>
+    /// <param name="milliseconds"> Milliseconds  </param>
+    public async void LoadScreen(float milliseconds)
     {
+        Debug.Log($"Loading screen for {milliseconds} milliseconds");
         if (_loadingText != null)
             _loadingText.text = "Loading model...";
 
+        float currentLoadTime = 0;
+
         _backgroundLoadScreen.SetActive(true);
 
-        await Task.Delay((int)miliseconds);
+        while (_modelLoadingAnimator.GetFloat(_loadingBlendName) < 1)
+        {
+            float currentValue = _modelLoadingAnimator.GetFloat(_loadingBlendName);
+            float newValue = Mathf.MoveTowards(currentValue, 1, Time.deltaTime * _loadingTransitionSpeed);
+            _modelLoadingAnimator.SetFloat(_loadingBlendName, newValue);
+
+            await Task.Yield();
+
+            currentLoadTime += Time.deltaTime * 1000;
+            if (currentLoadTime >= milliseconds / 2)
+                break;
+        }
+
+        _modelLoadingAnimator.SetFloat(_loadingBlendName, 1);
+
+        await Task.Delay((int)milliseconds - (int)currentLoadTime);
+
+        while (_modelLoadingAnimator.GetFloat(_loadingBlendName) > 0)
+        {
+            float currentValue = _modelLoadingAnimator.GetFloat(_loadingBlendName);
+            float newValue = Mathf.MoveTowards(currentValue, 0, Time.deltaTime * _loadingTransitionSpeed);
+            _modelLoadingAnimator.SetFloat(_loadingBlendName, newValue);
+
+            await Task.Yield();
+
+            currentLoadTime += Time.deltaTime * 1000;
+            if (currentLoadTime >= milliseconds)
+                break;
+        }
+
+        _modelLoadingAnimator.SetFloat(_loadingBlendName, 0);
 
         _backgroundLoadScreen.SetActive(false);
     }
@@ -265,7 +316,7 @@ public class UIManager : MonoBehaviour
         while (Mathf.Abs(_renderTypeAnimator.GetFloat(_renderTypeBlendName) - _targetValue) > 0.01f)
         {
             float currentValue = _renderTypeAnimator.GetFloat(_renderTypeBlendName);
-            float newValue = Mathf.MoveTowards(currentValue, _targetValue, _transitionSpeed * Time.deltaTime);
+            float newValue = Mathf.MoveTowards(currentValue, _targetValue, _renderTransitionSpeed * Time.deltaTime);
             _renderTypeAnimator.SetFloat(_renderTypeBlendName, newValue);
             yield return null;
         }
